@@ -327,6 +327,35 @@ function render(){
     </div>
   </div>
 
+  <div class="card" style="padding:14px 12px">
+    <div class="sect-title" style="margin-bottom:4px">Klíčové události — tipy na porovnání</div>
+    <div class="note" style="margin-bottom:8px">Klikni na událost a roky se nastaví automaticky</div>
+    <div id="timeline" style="font-size:11px;line-height:1.3">
+    ${[
+      {y:"2004→2008",a:2004,b:2008,t:"Vstup do EU → předkrizový boom",d:"Vstup ČR do EU (2004), levné hypotéky, exploze cen bytů. Zlaté časy pro nemovitosti.",c:"#e8a33d"},
+      {y:"2007→2009",a:2007,b:2009,t:"Světová finanční krize",d:"Pád Lehman Brothers. Ceny bytů v Praze −18 %. Konec progresivní daně, přechod na flat 15 % (2008).",c:"var(--r)"},
+      {y:"2008→2013",a:2008,b:2013,t:"Daňová reforma + stagnace",d:"Superhrubá mzda (2008–2020). Sleva na poplatníka skok na 24 840 Kč. Úroky hypoték klesají.",c:"#5b7ab5"},
+      {y:"2013→2016",a:2013,b:2016,t:"Éra levných peněz",d:"ČNB drží nulové sazby a oslabuje korunu. Historicky nejnižší hypotéky (~2 %). Ceny bytů startují raketový růst.",c:"var(--g)"},
+      {y:"2016→2019",a:2016,b:2019,t:"Boom před covidem",d:"Ceny bytů v Praze +80 % za 3 roky. Mzdy rostou, nezaměstnanost rekordně nízká. Sazby hypoték začínají stoupat.",c:"#e8a33d"},
+      {y:"2019→2022",a:2019,b:2022,t:"Covid → inflační šok",d:"Pandemie, pak energetická krize a válka na Ukrajině. Inflace 15,1 % (2022) — nejvyšší od 1993. ČNB zvedá sazby na 7 %.",c:"var(--r)"},
+      {y:"2019→2026",a:2019,b:2026,t:"Celý inflační cyklus",d:"Kumulativní inflace ~35 %. Odvody OSVČ zdvojnásobeny (konsolidační balíček). Byty z 63k na 157k/m².",c:"var(--r)"},
+      {y:"2021→2023",a:2021,b:2023,t:"Hypoteční šok",d:"Sazby z 2 % na 6 %. Hypotéky zdražily o 80 %. Trh s byty zamrzl, ale ceny neklesly.",c:"#5b7ab5"},
+      {y:"2023→2026",a:2023,b:2026,t:"Konsolidační balíček",d:"Sociální VZ OSVČ z 50 % na 55 %. Dvě daňová pásma 15/23 %. Zaměstnanci platí nemocenskou (0,6 %). Min. zálohy OSVČ z 5 667 na 9 026 Kč.",c:"var(--r)"},
+      {y:"2000→2026",a:2000,b:2026,t:"Čtvrtstoletí změn",d:"Progresivní daň → flat → dvě pásma. Koruna 36→25 za EUR. Byty 15k→157k/m². Průměrná mzda 13k→49k.",c:"#3a3a3a"},
+    ].map(e=>`
+      <div onclick="S.yearA=${e.a};S.yearB=${e.b};render();this.scrollIntoView({behavior:'smooth',block:'center'})" 
+        style="display:flex;gap:8px;padding:8px 8px;margin-bottom:4px;border-radius:8px;cursor:pointer;border-left:3px solid ${e.c};background:${S.yearA===e.a&&S.yearB===e.b?'#f5f0eb':'transparent'};transition:.15s"
+        onmouseover="this.style.background='#f5f0eb'" onmouseout="this.style.background='${S.yearA===e.a&&S.yearB===e.b?'#f5f0eb':'transparent'}'">
+        <div style="min-width:64px;font-family:var(--mono);font-weight:700;font-size:10px;color:${e.c};padding-top:1px">${e.y}</div>
+        <div>
+          <div style="font-weight:700;font-size:12px;color:#2a2520">${e.t}</div>
+          <div style="font-size:10px;color:var(--muted);margin-top:1px">${e.d}</div>
+        </div>
+      </div>
+    `).join("")}
+    </div>
+  </div>
+
   <div class="result-cards">
     <div class="rcard rcard-a"><div class="lbl" style="color:var(--g)">OSVČ ${S.yearA}</div><div class="big" style="color:#3a5a3f">${fmt(grossA)} Kč</div><div class="sm" style="color:#7a9a7f">čistý: ${fmt(cisA)} Kč</div></div>
     <div class="rcard rcard-b"><div class="lbl" style="opacity:.8">OSVČ ${S.yearB}</div><div class="big">${fmt(grossB)} Kč</div><div class="sm">čistý: ${fmt(cisB)} Kč</div></div>
