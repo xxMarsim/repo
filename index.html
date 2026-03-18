@@ -7,461 +7,133 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--g:#6B8F71;--r:#C45B4A;--bg:#faf7f3;--card:#fff;--muted:#7a7570;--border:#e8e4df;--bold-bg:#f8f5f1;--font:'DM Sans',sans-serif;--mono:'DM Mono',monospace}
-body{font-family:var(--font);background:linear-gradient(180deg,var(--bg) 0%,#ece7e0 100%);color:#3a3a3a;-webkit-font-smoothing:antialiased;min-height:100vh}
-.wrap{max-width:680px;margin:0 auto;padding:20px 12px 40px}
-.card{background:var(--card);border-radius:14px;padding:16px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
-h1{font-size:22px;font-weight:800;line-height:1.25;color:#2a2520;text-align:center}
-.sub{font-size:11px;color:var(--muted);text-align:center;margin-top:4px}
-.tag{font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--r);text-align:center;margin-bottom:4px}
-.row-flex{display:flex;gap:8px;flex-wrap:wrap}
-.row-flex>*{flex:1 1 100px}
-label.sm{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:4px}
-select{width:100%;padding:8px;border-radius:8px;font-size:16px;font-weight:700;font-family:var(--mono);cursor:pointer;appearance:auto;-webkit-appearance:auto}
-.sel-a{border:2px solid var(--g);color:var(--g);background:#f0f7f1}
-.sel-b{border:2px solid var(--r);color:var(--r);background:#fdf0ee}
-.btn-group{display:flex;gap:5px;flex-wrap:wrap}
-.btn{padding:7px 10px;border-radius:7px;border:2px solid #ddd;font-size:12px;font-weight:700;cursor:pointer;background:#fff;color:#aaa;flex:1 1 80px;text-align:center;font-family:var(--font);transition:.15s}
-.btn.on{border-color:#555;background:#555;color:#fff}
-.btn.on-g{border-color:var(--g);background:var(--g);color:#fff}
-.btn.on-r{border-color:var(--r);background:var(--r);color:#fff}
-.slider-wrap{margin:10px 0}
-.slider-label{display:flex;justify-content:space-between;align-items:baseline}
-.slider-val{font-family:var(--mono);font-size:20px;font-weight:800}
-input[type=range]{width:100%;margin:4px 0;accent-color:var(--g)}
-.range-labels{display:flex;justify-content:space-between;font-size:10px;color:#b0a99f}
-.result-cards{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:12px}
-.rcard{flex:1 1 150px;border-radius:12px;padding:14px}
-.rcard-a{background:#f0f7f1;border:2px solid var(--g)}
-.rcard-b{background:linear-gradient(135deg,var(--r) 0%,#a34535 100%);color:#fff;box-shadow:0 6px 20px rgba(196,91,74,.25)}
-.rcard .big{font-size:24px;font-weight:800;font-family:var(--mono)}
-.rcard .sm{font-size:11px;opacity:.7}
-.rcard .lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px}
-.diff-box{text-align:center;display:flex;justify-content:center;gap:20px;flex-wrap:wrap}
-.diff-num{font-size:26px;font-weight:800;font-family:var(--mono)}
-.diff-sub{font-size:11px;color:var(--muted)}
-.divider{border-left:1px solid var(--border);padding-left:20px}
-/* Table grid — 3 data columns */
-.tbl-head{display:grid;grid-template-columns:1fr 68px 68px 68px 52px;gap:2px;padding:0 4px 6px;border-bottom:2px solid var(--border);margin-bottom:4px;font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#999}
-.tbl-row{display:grid;grid-template-columns:1fr 68px 68px 68px 52px;gap:2px;padding:5px 4px;border-radius:6px;font-size:11px;align-items:center}
-.tbl-row.bold{background:var(--bold-bg);font-weight:700;border-top:2px solid var(--border);margin-top:4px}
-.tbl-row .lbl{font-weight:500}
-.tbl-row.bold .lbl{font-weight:700}
-.mono{font-family:var(--mono);text-align:right;font-size:11px}
-.mono.ga{color:var(--g)}.mono.rb{color:var(--r)}
-.badge{text-align:right;font-family:var(--mono);font-size:10px;font-weight:700;border-radius:4px;padding:1px 4px;white-space:nowrap}
-.badge.up{color:var(--r);background:#fdf0ee}
-.badge.down{color:var(--g);background:#f0f7f1}
-.badge.flat{color:#999;background:transparent}
-.arrow{text-align:center;color:#b0a99f;font-size:10px}
-.sect-title{font-size:14px;font-weight:700;margin-bottom:8px}
-.note{font-size:11px;color:#b0a99f;margin-bottom:8px}
-.detail-row{display:flex;gap:16px;flex-wrap:wrap;font-size:12px}
-.detail-col{flex:1 1 140px}
-.detail-col b{font-weight:700}
-.meth{background:#f5f0eb;border-radius:12px;padding:14px;font-size:11px;color:var(--muted);line-height:1.65;margin-bottom:14px}
-.meth b{color:#3a3a3a}
-.meth p{margin:0 0 3px}
-.footer{text-align:center;font-size:10px;color:#b0a99f}
-.vline{font-size:12px;color:#b0a99f;border-top:1px solid #f0ebe4;padding-top:6px;margin-top:6px}
-.num-input{font-family:var(--mono);font-size:20px;font-weight:800;border:none;background:transparent;text-align:right;width:140px;outline:none;padding:2px 0}
-.num-input:focus{border-bottom:2px solid var(--r);background:#fafafa;border-radius:4px}
-@media(max-width:400px){
-  .tbl-head,.tbl-row{grid-template-columns:1fr 52px 52px 52px 40px}
-  .tbl-head{font-size:7px}.tbl-row{font-size:10px}
-  .mono{font-size:9px}.badge{font-size:8px;padding:1px 2px}
-  h1{font-size:19px}.rcard .big{font-size:20px}.diff-num{font-size:22px}
-  .slider-val{font-size:17px}.num-input{font-size:17px;width:120px}
-}
+:root{--g:#6B8F71;--r:#C45B4A;--b:#5b7ab5;--bg:#faf7f3;--card:#fff;--mut:#7a7570;--brd:#e8e4df;--hi:#f8f5f1;--f:'DM Sans',sans-serif;--m:'DM Mono',monospace}
+body{font-family:var(--f);background:linear-gradient(180deg,var(--bg),#ece7e0);color:#3a3a3a;-webkit-font-smoothing:antialiased}
+.w{max-width:660px;margin:0 auto;padding:14px 10px 40px}
+.c{background:var(--card);border-radius:12px;padding:14px 12px;margin-bottom:10px;box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.st{font-size:13px;font-weight:700;margin-bottom:6px}
+.nt{font-size:10px;color:var(--mut);margin-bottom:6px}
+select{width:100%;padding:7px;border-radius:8px;font-size:15px;font-weight:700;font-family:var(--m);cursor:pointer;appearance:auto}
+.sa{border:2px solid var(--g);color:var(--g);background:#f0f7f1}
+.sb{border:2px solid var(--r);color:var(--r);background:#fdf0ee}
+.bg{display:flex;gap:4px;flex-wrap:wrap}
+.b{padding:6px 8px;border-radius:6px;border:2px solid #ddd;font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:#aaa;flex:1 1 70px;text-align:center;font-family:var(--f);transition:.15s}
+.b.on{border-color:#555;background:#555;color:#fff}
+.b.og{border-color:var(--g);background:var(--g);color:#fff}
+.b.or{border-color:var(--r);background:var(--r);color:#fff}
+input[type=range]{width:100%;margin:3px 0}
+.ni{font-family:var(--m);font-size:17px;font-weight:800;border:none;background:transparent;text-align:right;width:120px;outline:none}
+.ni:focus{border-bottom:2px solid var(--r);background:#fafafa;border-radius:4px}
+.rc{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.rc>div{flex:1 1 95px;border-radius:10px;padding:10px}
+.rc .v{font-size:18px;font-weight:800;font-family:var(--m)}
+.rc .l{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.7px}
+.rc .s{font-size:9px;opacity:.7}
+.db{text-align:center;display:flex;justify-content:center;gap:14px;flex-wrap:wrap}
+.dn{font-size:22px;font-weight:800;font-family:var(--m)}
+.ds{font-size:10px;color:var(--mut)}
+.dv{border-left:1px solid var(--brd);padding-left:14px}
+.th{display:grid;grid-template-columns:1fr 60px 60px 60px 44px;gap:1px;padding:0 4px 4px;border-bottom:2px solid var(--brd);margin-bottom:2px;font-size:7px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#999}
+.tr{display:grid;grid-template-columns:1fr 60px 60px 60px 44px;gap:1px;padding:3px 4px;border-radius:4px;font-size:10px;align-items:center}
+.tr.bo{background:var(--hi);font-weight:700;border-top:2px solid var(--brd);margin-top:2px}
+.mn{font-family:var(--m);text-align:right;font-size:9.5px}
+.bd{text-align:right;font-family:var(--m);font-size:8px;font-weight:700;border-radius:3px;padding:1px 3px;white-space:nowrap}
+.bd.up{color:var(--r);background:#fdf0ee}.bd.dn{color:var(--g);background:#f0f7f1}
+.eg{display:grid;grid-template-columns:1fr auto;gap:1px 6px;font-size:10px;line-height:1.7}
+.sc{display:flex;gap:8px;padding:8px;border-radius:8px;margin-bottom:5px;background:var(--hi);align-items:flex-start}
+.sc .ic{font-size:24px;min-width:30px;text-align:center;line-height:1}
+.sc .ti{font-weight:700;font-size:10.5px;margin-bottom:2px}
+.sc .cols{display:flex;gap:5px;flex-wrap:wrap}
+.sc .col{flex:1 1 100px;padding:4px 5px;border-radius:4px;font-size:9px}
+.sc .col b{display:block;margin-bottom:1px}
+.sc .ok{background:#edf5ef}.sc .no{background:#fdf0ee}
+details.ev{margin-bottom:3px;border-left:3px solid #ddd;border-radius:0}
+details.ev summary{padding:5px 8px;cursor:pointer;list-style:none;font-size:11px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
+details.ev summary::after{content:"▸";font-size:10px;color:#bbb;transition:.2s}
+details.ev[open] summary::after{transform:rotate(90deg)}
+details.ev summary::-webkit-details-marker{display:none}
+details.ev .td{padding:4px 8px 8px;font-size:9.5px;color:var(--mut)}
+.sl{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;margin-bottom:1px}
+.sv{font-family:var(--m);font-size:14px;font-weight:700}
+.mt{background:#f5f0eb;border-radius:10px;padding:10px;font-size:9px;color:var(--mut);line-height:1.5;margin-bottom:10px}
+.mt b{color:#3a3a3a}.mt p{margin:0 0 2px}
+.ft{text-align:center;font-size:9px;color:#bbb;margin-bottom:20px}
+.lnk{display:inline-block;margin-top:8px;padding:8px 16px;background:var(--r);color:#fff;border-radius:8px;text-decoration:none;font-weight:700;font-size:12px}
+@media(max-width:370px){.th,.tr{grid-template-columns:1fr 50px 50px 50px 36px}.mn{font-size:8.5px}.bd{font-size:7px}.rc .v{font-size:15px}}
 </style>
 </head>
 <body>
-<div class="wrap" id="app"></div>
+<div class="w" id="app"></div>
 <script>
-// ═══════════ DATABASE ═══════════
-const DB={
-2000:{inflace:3.9,minSoc:879,minZdr:675,slevaPoplatnik:0,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:15000,hypoSazba:7.5,nafta:19.5},
-2001:{inflace:4.7,minSoc:937,minZdr:675,slevaPoplatnik:0,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:16500,hypoSazba:6.8,nafta:20.5},
-2002:{inflace:1.8,minSoc:1005,minZdr:748,slevaPoplatnik:0,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:18000,hypoSazba:5.9,nafta:20},
-2003:{inflace:.1,minSoc:1051,minZdr:810,slevaPoplatnik:0,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:21000,hypoSazba:5.3,nafta:20.5},
-2004:{inflace:2.8,minSoc:1071,minZdr:810,slevaPoplatnik:0,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:24000,hypoSazba:4.8,nafta:22},
-2005:{inflace:1.9,minSoc:1143,minZdr:922,slevaPoplatnik:7200,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:27000,hypoSazba:4.2,nafta:25},
-2006:{inflace:2.5,minSoc:1394,minZdr:1064,slevaPoplatnik:7200,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:33000,hypoSazba:4.3,nafta:27.5},
-2007:{inflace:2.8,minSoc:1491,minZdr:1141,slevaPoplatnik:7200,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"p",bytM2:42000,hypoSazba:4.6,nafta:27},
-2008:{inflace:6.3,minSoc:1596,minZdr:1456,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:45000,hypoSazba:5.7,nafta:31.5},
-2009:{inflace:1,minSoc:1720,minZdr:1590,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:38000,hypoSazba:5.5,nafta:25},
-2010:{inflace:1.5,minSoc:1731,minZdr:1601,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:36000,hypoSazba:4.9,nafta:29},
-2011:{inflace:1.9,minSoc:1807,minZdr:1670,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:35000,hypoSazba:4.1,nafta:34},
-2012:{inflace:3.3,minSoc:1836,minZdr:1697,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:34000,hypoSazba:3.5,nafta:36.5},
-2013:{inflace:1.4,minSoc:1890,minZdr:1748,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:33000,hypoSazba:3.2,nafta:36},
-2014:{inflace:.4,minSoc:1894,minZdr:1752,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:35000,hypoSazba:2.9,nafta:36},
-2015:{inflace:.3,minSoc:1943,minZdr:1797,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:40000,hypoSazba:2.5,nafta:30},
-2016:{inflace:.7,minSoc:1972,minZdr:1823,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:48000,hypoSazba:2,nafta:27},
-2017:{inflace:2.5,minSoc:2061,minZdr:1906,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:55000,hypoSazba:2.2,nafta:29},
-2018:{inflace:2.1,minSoc:2189,minZdr:2024,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:62000,hypoSazba:2.9,nafta:31},
-2019:{inflace:2.8,minSoc:2388,minZdr:2208,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:63000,hypoSazba:2.7,nafta:31.5},
-2020:{inflace:3.2,minSoc:2544,minZdr:2352,slevaPoplatnik:24840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:68000,hypoSazba:2.3,nafta:27.5},
-2021:{inflace:3.8,minSoc:2588,minZdr:2393,slevaPoplatnik:27840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:85000,hypoSazba:2.5,nafta:31},
-2022:{inflace:15.1,minSoc:2841,minZdr:2627,slevaPoplatnik:30840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:105000,hypoSazba:5.3,nafta:43},
-2023:{inflace:10.7,minSoc:2944,minZdr:2722,slevaPoplatnik:30840,socVZ:.5,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"f",bytM2:100000,hypoSazba:6,nafta:38},
-2024:{inflace:2.4,minSoc:3852,minZdr:2968,slevaPoplatnik:30840,socVZ:.55,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"d",limitDan:1582812,bytM2:116000,hypoSazba:5.1,nafta:38},
-2025:{inflace:2.5,minSoc:4759,minZdr:3143,slevaPoplatnik:30840,socVZ:.55,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"d",limitDan:1582812,bytM2:135000,hypoSazba:4.6,nafta:34},
-2026:{inflace:2.2,minSoc:5720,minZdr:3306,slevaPoplatnik:30840,socVZ:.55,zdrVZ:.5,sazbaSoc:.292,sazbaZdr:.135,danMode:"d",limitDan:1582812,bytM2:157000,hypoSazba:4.5,nafta:36}
-};
-const YRS=Object.keys(DB).map(Number);
-const fmt=n=>Math.round(n).toLocaleString("cs-CZ");
+const DB={2000:{i:3.9,ms:879,mz:675,sl:0,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:15000,hs:7.5,n:19.5,hm:10000},2001:{i:4.7,ms:937,mz:675,sl:0,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:16500,hs:6.8,n:20.5,hm:11000},2002:{i:1.8,ms:1005,mz:748,sl:0,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:18000,hs:5.9,n:20,hm:12000},2003:{i:.1,ms:1051,mz:810,sl:0,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:21000,hs:5.3,n:20.5,hm:13000},2004:{i:2.8,ms:1071,mz:810,sl:0,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:24000,hs:4.8,n:22,hm:14500},2005:{i:1.9,ms:1143,mz:922,sl:7200,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:27000,hs:4.2,n:25,hm:16000},2006:{i:2.5,ms:1394,mz:1064,sl:7200,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:33000,hs:4.3,n:27.5,hm:20000},2007:{i:2.8,ms:1491,mz:1141,sl:7200,sv:.5,zv:.5,ss:.292,sz:.135,dm:"p",bm:42000,hs:4.6,n:27,hm:27000},2008:{i:6.3,ms:1596,mz:1456,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:45000,hs:5.7,n:31.5,hm:30000},2009:{i:1,ms:1720,mz:1590,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:38000,hs:5.5,n:25,hm:26000},2010:{i:1.5,ms:1731,mz:1601,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:36000,hs:4.9,n:29,hm:25000},2011:{i:1.9,ms:1807,mz:1670,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:35000,hs:4.1,n:34,hm:25000},2012:{i:3.3,ms:1836,mz:1697,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:34000,hs:3.5,n:36.5,hm:24000},2013:{i:1.4,ms:1890,mz:1748,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:33000,hs:3.2,n:36,hm:24000},2014:{i:.4,ms:1894,mz:1752,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:35000,hs:2.9,n:36,hm:25000},2015:{i:.3,ms:1943,mz:1797,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:40000,hs:2.5,n:30,hm:28000},2016:{i:.7,ms:1972,mz:1823,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:48000,hs:2,n:27,hm:33000},2017:{i:2.5,ms:2061,mz:1906,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:55000,hs:2.2,n:29,hm:40000},2018:{i:2.1,ms:2189,mz:2024,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:62000,hs:2.9,n:31,hm:48000},2019:{i:2.8,ms:2388,mz:2208,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:63000,hs:2.7,n:31.5,hm:50000},2020:{i:3.2,ms:2544,mz:2352,sl:24840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:68000,hs:2.3,n:27.5,hm:55000},2021:{i:3.8,ms:2588,mz:2393,sl:27840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:85000,hs:2.5,n:31,hm:65000},2022:{i:15.1,ms:2841,mz:2627,sl:30840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:105000,hs:5.3,n:43,hm:80000},2023:{i:10.7,ms:2944,mz:2722,sl:30840,sv:.5,zv:.5,ss:.292,sz:.135,dm:"f",bm:100000,hs:6,n:38,hm:78000},2024:{i:2.4,ms:3852,mz:2968,sl:30840,sv:.55,zv:.5,ss:.292,sz:.135,dm:"d",ld:1582812,bm:116000,hs:5.1,n:38,hm:85000},2025:{i:2.5,ms:4759,mz:3143,sl:30840,sv:.55,zv:.5,ss:.292,sz:.135,dm:"d",ld:1582812,bm:135000,hs:4.6,n:34,hm:95000},2026:{i:2.2,ms:5720,mz:3306,sl:30840,sv:.55,zv:.5,ss:.292,sz:.135,dm:"d",ld:1582812,bm:157000,hs:4.5,n:36,hm:110000}};
+// hm = rodinný dům Kč/m² Praha-okolí
+const NJ={2000:{k2:7000,k3:9500},2005:{k2:9000,k3:12000},2010:{k2:11000,k3:14500},2015:{k2:13000,k3:17000},2019:{k2:15000,k3:20000},2022:{k2:18000,k3:24000},2025:{k2:23500,k3:31000},2026:{k2:25000,k3:33000}};
+function gN(y,t){const ks=Object.keys(NJ).map(Number).sort((a,b)=>a-b);let lo=ks[0],hi=ks[ks.length-1];for(const k of ks){if(k<=y)lo=k;if(k>=y){hi=k;break}}if(lo===hi)return NJ[lo][t];return Math.round(NJ[lo][t]+(NJ[hi][t]-NJ[lo][t])*(y-lo)/(hi-lo))}
+const YRS=Object.keys(DB).map(Number),F=n=>Math.round(n).toLocaleString("cs-CZ");
+function CPI(b){const x={};x[2000]=1;for(let y=2001;y<=2026;y++)x[y]=x[y-1]*(1+DB[y].i/100);const v=x[b],r={};for(const y of YRS)r[y]=x[y]/v;return r}
+function TAX(z,y){const d=DB[y];if(d.dm==="p"){let t=0;if(z<=109200)t=z*.15;else if(z<=218400)t=109200*.15+(z-109200)*.2;else if(z<=331200)t=109200*.15+109200*.2+(z-218400)*.25;else t=109200*.15+109200*.2+112800*.25+(z-331200)*.32;return Math.max(0,t-d.sl)}if(d.dm==="f")return Math.max(0,z*.15-d.sl);if(z<=(d.ld||9e9))return Math.max(0,z*.15-d.sl);return Math.max(0,(d.ld||0)*.15+(z-(d.ld||0))*.23-d.sl)}
+function OC(g,y,p){const d=DB[y],gy=g*12,dz=p?gy*.4:gy*.6,sr=Math.max(dz*d.sv*d.ss,d.ms*12),zr=Math.max(dz*d.zv*d.sz,d.mz*12),dn=TAX(dz,y);return{gm:g,sm:Math.round(sr/12),zm:Math.round(zr/12),dm_:Math.round(dn/12),cm:Math.round((gy-sr-zr-dn)/12)}}
+function FG(t,y,p){let lo=t,hi=t*4;for(let i=0;i<60;i++){const m=(lo+hi)/2;OC(m,y,p).cm<t?lo=m:hi=m}return Math.round((lo+hi)/2)}
+function ZM(h,y){const d=DB[y];let zs,zz,es,ez;if(y<=2008){zs=.08;zz=.045;es=.26;ez=.09}else if(y<=2018){zs=.065;zz=.045;es=.25;ez=.09}else if(y<=2023){zs=.065;zz=.045;es=.248;ez=.09}else{zs=.071;zz=.045;es=.248;ez=.09}const sZ=Math.round(h*zs),zZ=Math.round(h*zz),sE=Math.round(h*es),zE=Math.round(h*ez);let dn;if(y>=2008&&y<=2020)dn=Math.max(0,Math.ceil(Math.ceil(h*(1+es+ez))*.15)-Math.round(d.sl/12));else if(y>=2021){const lm=d.ld?Math.round(d.ld/12):9e9;dn=h<=lm||y<=2023?Math.max(0,Math.ceil(h*.15)-Math.round(d.sl/12)):Math.max(0,Math.ceil(lm*.15+(h-lm)*.23)-Math.round(d.sl/12))}else{const r=h*12;let t=0;if(r<=109200)t=r*.15;else if(r<=218400)t=109200*.15+(r-109200)*.2;else if(r<=331200)t=109200*.15+109200*.2+(r-218400)*.25;else t=109200*.15+109200*.2+112800*.25+(r-331200)*.32;dn=Math.max(0,Math.round(t/12)-Math.round(d.sl/12))}return{h,sZ,zZ,dn,c:h-sZ-zZ-dn,sE,zE,tot:h+sE+zE}}
+function AN(p,r,n){const m=r/100/12;return m===0?p/n:p*m*Math.pow(1+m,n)/(Math.pow(1+m,n)-1)}
 
-function getCPI(base){
-  const idx={};idx[2000]=1;
-  for(let y=2001;y<=2026;y++) idx[y]=idx[y-1]*(1+DB[y].inflace/100);
-  const bv=idx[base],r={};
-  for(const y of YRS) r[y]=idx[y]/bv;
-  return r;
-}
-function calcTax(dz,y){
-  const d=DB[y];
-  if(d.danMode==="p"){
-    let t=0;
-    if(dz<=109200)t=dz*.15;
-    else if(dz<=218400)t=109200*.15+(dz-109200)*.2;
-    else if(dz<=331200)t=109200*.15+109200*.2+(dz-218400)*.25;
-    else t=109200*.15+109200*.2+112800*.25+(dz-331200)*.32;
-    return Math.max(0,t-d.slevaPoplatnik);
-  }else if(d.danMode==="f"){
-    return Math.max(0,dz*.15-d.slevaPoplatnik);
-  }else{
-    if(dz<=d.limitDan)return Math.max(0,dz*.15-d.slevaPoplatnik);
-    return Math.max(0,d.limitDan*.15+(dz-d.limitDan)*.23-d.slevaPoplatnik);
-  }
-}
-function calcOSVC(gm,y,pau){
-  const d=DB[y],gy=gm*12,dz=pau?gy*.4:gy*.6;
-  const sv=dz*d.socVZ,sc=sv*d.sazbaSoc,sm=d.minSoc*12,sr=Math.max(sc,sm);
-  const zv=dz*d.zdrVZ,zc=zv*d.sazbaZdr,zm=d.minZdr*12,zr=Math.max(zc,zm);
-  const dan=calcTax(dz,y),odv=sr+zr+dan,c=gy-odv;
-  return{grossMonthly:gm,socMes:Math.round(sr/12),zdrMes:Math.round(zr/12),danMes:Math.round(dan/12),cistyMes:Math.round(c/12)};
-}
-function findGross(tn,y,pau){
-  let lo=tn,hi=tn*4;
-  for(let i=0;i<60;i++){const m=(lo+hi)/2;calcOSVC(m,y,pau).cistyMes<tn?lo=m:hi=m;}
-  return Math.round((lo+hi)/2);
-}
-
-// ═══════════ EMPLOYEE CALC ═══════════
-function calcZam(hruba,year){
-  const d=DB[year];
-  // Sazby zaměstnance
-  let zamSoc,zamZdr,zamtelSoc,zamtelZdr;
-  if(year<=2008){zamSoc=.08;zamZdr=.045;zamtelSoc=.26;zamtelZdr=.09}
-  else if(year<=2018){zamSoc=.065;zamZdr=.045;zamtelSoc=.25;zamtelZdr=.09}
-  else if(year<=2023){zamSoc=.065;zamZdr=.045;zamtelSoc=.248;zamtelZdr=.09}
-  else{zamSoc=.071;zamZdr=.045;zamtelSoc=.248;zamtelZdr=.09} // od 2024 + 0.6% nemocenské
-  const socZam=Math.round(hruba*zamSoc);
-  const zdrZam=Math.round(hruba*zamZdr);
-  const socZamtel=Math.round(hruba*zamtelSoc);
-  const zdrZamtel=Math.round(hruba*zamtelZdr);
-  // Daň
-  let zakladDane,dan;
-  if(year>=2008&&year<=2020){
-    // superhrubá mzda
-    zakladDane=Math.ceil(hruba*(1+zamtelSoc+zamtelZdr));
-    dan=Math.max(0,Math.ceil(zakladDane*.15)-Math.round(d.slevaPoplatnik/12));
-  }else if(year>=2021){
-    // z hrubé, 15/23
-    zakladDane=hruba;
-    const limitMes=d.limitDan?Math.round(d.limitDan/12):999999;
-    if(year<=2023||hruba<=limitMes){
-      dan=Math.max(0,Math.ceil(hruba*.15)-Math.round(d.slevaPoplatnik/12));
-    }else{
-      dan=Math.max(0,Math.ceil(limitMes*.15+(hruba-limitMes)*.23)-Math.round(d.slevaPoplatnik/12));
-    }
-  }else{
-    // progresivní (do 2007) - zjednodušení
-    const rocni=hruba*12;
-    let t=0;
-    if(rocni<=109200)t=rocni*.15;
-    else if(rocni<=218400)t=109200*.15+(rocni-109200)*.2;
-    else if(rocni<=331200)t=109200*.15+109200*.2+(rocni-218400)*.25;
-    else t=109200*.15+109200*.2+112800*.25+(rocni-331200)*.32;
-    dan=Math.max(0,Math.round(t/12)-Math.round(d.slevaPoplatnik/12));
-  }
-  const cisty=hruba-socZam-zdrZam-dan;
-  const nakladZamtel=hruba+socZamtel+zdrZamtel;
-  return{hruba,socZam,zdrZam,dan,cisty,socZamtel,zdrZamtel,nakladZamtel};
-}
-
-// ═══════════ STATE ═══════════
-let S={yearA:2019,yearB:2026,amount:45000,side:"A",pau:true,autoType:0,km:15000};
+let S={yA:2019,yB:2026,amt:45000,side:"A",pau:true,at:0,km:15000,nem:0,hl:30,hlt:80,af:0,alt:100,ale:5};
+const sel=v=>YRS.map(y=>`<option value="${y}"${y===v?" selected":""}>${y}</option>`).join("");
+function hI(el,f){const v=parseInt(el.value.replace(/\D/g,""),10);S[f]=isNaN(v)||v<1000?10000:Math.min(v,999000);render()}
+function sY(a,b){S.yA=a;S.yB=b;render()}
 
 function render(){
-  const cpi=getCPI(S.yearA),inflMul=cpi[S.yearB]||1;
-  let resA,resB,grossA,grossB;
-  if(S.side==="A"){
-    resA=calcOSVC(S.amount,S.yearA,S.pau);
-    const tn=Math.round(resA.cistyMes*inflMul);
-    grossB=findGross(tn,S.yearB,S.pau);resB=calcOSVC(grossB,S.yearB,S.pau);grossA=S.amount;
-  }else{
-    resB=calcOSVC(S.amount,S.yearB,S.pau);
-    const tn=Math.round(resB.cistyMes/inflMul);
-    grossA=findGross(tn,S.yearA,S.pau);resA=calcOSVC(grossA,S.yearA,S.pau);grossB=S.amount;
-  }
-  const odvA=resA.socMes+resA.zdrMes+resA.danMes,odvB=resB.socMes+resB.zdrMes+resB.danMes;
-  const cisA=resA.grossMonthly-odvA,cisB=resB.grossMonthly-odvB;
-  const gDiff=grossB-grossA,gPct=grossA>0?((gDiff/grossA)*100).toFixed(0):0;
-  const inflPct=((inflMul-1)*100).toFixed(1);
+const C=CPI(S.yA),im=C[S.yB]||1;let rA,rB,gA,gB;
+if(S.side==="A"){rA=OC(S.amt,S.yA,S.pau);gB=FG(Math.round(rA.cm*im),S.yB,S.pau);rB=OC(gB,S.yB,S.pau);gA=S.amt}else{rB=OC(S.amt,S.yB,S.pau);gA=FG(Math.round(rB.cm/im),S.yA,S.pau);rA=OC(gA,S.yA,S.pau);gB=S.amt}
+const oA=rA.sm+rA.zm+rA.dm_,oB=rB.sm+rB.zm+rB.dm_,cA=rA.gm-oA,cB=rB.gm-oB;
+const zB=ZM(gB,S.yB),zO=zB.sZ+zB.zZ+zB.dn;
+const gD=gB-gA,gP=gA>0?((gD/gA)*100).toFixed(0):0,iP=((im-1)*100).toFixed(1);
+const dA=DB[S.yA],dB=DB[S.yB];
+function R(l,a,b,z,bo,rw,sf){const df=rw?(b-a):a>0?((b-a)/a*100).toFixed(0):(a===0&&b===0?"0":"–");const up=rw?b>a:df>0;return`<div class="tr${bo?" bo":""}"><span>${l}</span><span class="mn" style="color:var(--g)">${rw?a.toFixed(1)+sf:F(a)}</span><span class="mn" style="color:var(--r)">${rw?b.toFixed(1)+sf:F(b)}</span><span class="mn" style="color:var(--b)">${z!=null?(rw?z.toFixed(1)+sf:F(z)):""}</span><span class="bd ${up?"up":"dn"}">${rw?(b>a?"+":"")+(b-a).toFixed(1)+"pb":(df>0?"+":"")+df+"%"}</span></div>`}
+function H(z){return`<div class="th"><div></div><div style="text-align:right;color:var(--g)">OSVČ${S.yA}</div><div style="text-align:right;color:var(--r)">OSVČ${S.yB}</div><div style="text-align:right;color:var(--b)">${z||""}</div><div style="text-align:right">Δ</div></div>`}
+const ev=[{y:"2004→08",a:2004,b:2008,t:"Vstup do EU → boom",d:"Levné hypotéky, byty ×3. Konec progresivní daně.",c:"#e8a33d"},{y:"2007→09",a:2007,b:2009,t:"Finanční krize",d:"Pád Lehman. Byty −18%. Flat 15% + superhrubá.",c:"var(--r)"},{y:"2013→16",a:2013,b:2016,t:"Levné peníze",d:"ČNB nulové sazby. Hypotéky ~2%.",c:"var(--g)"},{y:"2019→22",a:2019,b:2022,t:"Covid → inflace",d:"Pandemie, energie, válka. Inflace 15%.",c:"var(--r)"},{y:"2019→26",a:2019,b:2026,t:"Inflační cyklus",d:"Kumul. ~35%. Odvody ×2. Byty 63→157k/m².",c:"var(--r)"},{y:"2023→26",a:2023,b:2026,t:"Konsolidace",d:"Soc.VZ 55%. Dual 15/23%. Zálohy 9k.",c:"var(--b)"},{y:"2000→26",a:2000,b:2026,t:"25 let",d:"Byty ×10. Mzda 13k→49k.",c:"#3a3a3a"}];
 
-  // Options HTML
-  const opts=YRS.map(y=>`<option value="${y}">${y}</option>`).join("");
+document.getElementById("app").innerHTML=`
+<div style="text-align:center;margin-bottom:10px"><div style="font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--r)">OSVČ Kalkulačka</div><h1 style="font-size:19px;font-weight:800;color:#2a2520">Kolik musíš vydělat, abys žil stejně?</h1><p style="font-size:10px;color:var(--mut);margin-top:2px">2000–2026 · Inflace · Odvody · Bydlení · Auto</p></div>
 
-  function tblRow(label,vA,vB,bold,raw,suffix,vZ){
-    const diff=raw?(vB-vA):vA>0?((vB-vA)/vA*100).toFixed(0):(vA===0&&vB===0?"0":"–");
-    const isUp=raw?vB>vA:diff>0;
-    const cls=bold?"tbl-row bold":"tbl-row";
-    const va=raw?vA.toFixed(1)+suffix:fmt(vA);
-    const vb=raw?vB.toFixed(1)+suffix:fmt(vB);
-    const vz=vZ!==undefined?(raw?vZ.toFixed(1)+suffix:fmt(vZ)):"";
-    const badge=raw?((vB>vA?"+":"")+(vB-vA).toFixed(1)+" p.b."):((diff>0?"+":"")+diff+" %");
-    const bc=isUp?"up":"down";
-    return`<div class="${cls}"><span class="lbl">${label}</span><span class="mono ga">${va}</span><span class="mono rb">${vb}</span><span class="mono" style="color:#5b7ab5">${vz}</span><span class="badge ${bc}">${badge}</span></div>`;
-  }
-  function tblHead(zamLabel){
-    if(zamLabel==="") return`<div class="tbl-head"><div></div><div style="text-align:right;color:var(--g)">${S.yearA}</div><div style="text-align:right;color:var(--r)">${S.yearB}</div><div></div><div style="text-align:right">Δ A→B</div></div>`;
-    const zCol=zamLabel||"Zam. "+S.yearB;
-    return`<div class="tbl-head"><div></div><div style="text-align:right;color:var(--g)">OSVČ ${S.yearA}</div><div style="text-align:right;color:var(--r)">OSVČ ${S.yearB}</div><div style="text-align:right;color:#5b7ab5">${zCol}</div><div style="text-align:right">Δ A→B</div></div>`;
-  }
+<div class="c"><div style="display:flex;gap:8px;margin-bottom:6px"><div style="flex:1"><div style="font-size:8px;font-weight:700;color:var(--g);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px">Rok A</div><select class="sa" onchange="S.yA=+this.value;render()">${sel(S.yA)}</select></div><div style="flex:0 0 20px;display:flex;align-items:flex-end;justify-content:center;padding-bottom:5px;font-size:14px">⇄</div><div style="flex:1"><div style="font-size:8px;font-weight:700;color:var(--r);text-transform:uppercase;letter-spacing:.7px;margin-bottom:2px">Rok B</div><select class="sb" onchange="S.yB=+this.value;render()">${sel(S.yB)}</select></div></div>
+<div class="bg" style="margin-bottom:6px"><button class="b ${S.side==="A"?"og":""}" onclick="S.side='A';render()">Příjem z ${S.yA}</button><button class="b ${S.side==="B"?"or":""}" onclick="S.side='B';render()">Příjem z ${S.yB}</button></div>
+<div class="sl"><span style="font-weight:600">Hrubý měsíčně</span><span style="display:flex;align-items:baseline;gap:2px"><input type="text" class="ni" value="${F(S.amt)}" onfocus="this.value=S.amt" onblur="hI(this,'amt')" onkeydown="if(event.key==='Enter')this.blur()" style="color:${S.side==="A"?"var(--g)":"var(--r)"}"><span style="font-size:11px;font-weight:700;color:var(--mut)">Kč</span></span></div>
+<input type="range" min="10000" max="250000" step="1000" value="${S.amt}" oninput="S.amt=+this.value;render()" style="accent-color:${S.side==="A"?"var(--g)":"var(--r)"}">
+<div class="bg" style="margin-top:4px"><button class="b ${S.pau?"on":""}" onclick="S.pau=true;render()">Paušální 60%</button><button class="b ${!S.pau?"on":""}" onclick="S.pau=false;render()">Skutečné 40%</button></div></div>
 
-  // Employee calc for year B at grossB
-  const zB=calcZam(grossB,S.yearB);
-  const zOdv=zB.socZam+zB.zdrZam+zB.dan;
+<div class="rc"><div style="background:#f0f7f1;border:2px solid var(--g)"><div class="l" style="color:var(--g)">OSVČ ${S.yA}</div><div class="v" style="color:#3a5a3f">${F(gA)}</div><div class="s" style="color:#7a9a7f">čistý ${F(cA)}</div></div><div style="background:linear-gradient(135deg,var(--r),#a34535);color:#fff;box-shadow:0 4px 12px rgba(196,91,74,.2)"><div class="l" style="opacity:.8">OSVČ ${S.yB}</div><div class="v">${F(gB)}</div><div class="s">čistý ${F(cB)}</div></div><div style="background:#eef2f8;border:2px solid var(--b)"><div class="l" style="color:var(--b)">Zam.${S.yB}</div><div class="v" style="color:#3a4f6f;font-size:15px">${F(gB)}</div><div class="s" style="color:#7a8faa">čistý ${F(zB.c)}</div></div></div>
 
-  // OSVČ rows with employee 3rd column
-  const osvcRows=[
-    {l:"Hrubý příjem",a:resA.grossMonthly,b:resB.grossMonthly,z:zB.hruba},
-    {l:"− Sociální poj.",a:resA.socMes,b:resB.socMes,z:zB.socZam},
-    {l:"− Zdravotní poj.",a:resA.zdrMes,b:resB.zdrMes,z:zB.zdrZam},
-    {l:"− Daň z příjmu",a:resA.danMes,b:resB.danMes,z:zB.dan},
-    {l:"= Odvody celkem",a:odvA,b:odvB,z:zOdv,bold:1},
-    {l:"= Čistý příjem",a:cisA,b:cisB,z:zB.cisty,bold:1}
-  ].map(r=>tblRow(r.l,r.a,r.b,r.bold,0,0,r.z)).join("");
+<div class="c"><div class="db"><div><div class="ds">Rozdíl</div><div class="dn" style="color:${gD>0?"var(--r)":"var(--g)"}">${gD>0?"+":""}${F(gD)}</div><div class="ds">${gD>0?"+":""}${gP}%</div></div><div class="dv"><div class="ds">Inflace</div><div class="dn" style="color:#e8a33d">${iP}%</div><div class="ds">${S.yA}→${S.yB}</div></div></div></div>
 
-  // Real estate
-  const dA=DB[S.yearA],dB=DB[S.yearB],pl=55,ltv=.8,roky=30,mes=roky*12;
-  const cA=dA.bytM2*pl,cB=dB.bytM2*pl,uA=cA*ltv,uB=cB*ltv;
-  const anuit=(p,r)=>{const m=r/100/12;return m===0?p/mes:p*m*Math.pow(1+m,mes)/(Math.pow(1+m,mes)-1)};
-  const spA=Math.round(anuit(uA,dA.hypoSazba)),spB=Math.round(anuit(uB,dB.hypoSazba));
-  const prA=Math.round(spA*mes-uA),prB=Math.round(spB*mes-uB);
-  const reRows=[
-    tblRow("Cena za m²",dA.bytM2,dB.bytM2),
-    tblRow("Cena bytu "+pl+" m²",cA,cB),
-    tblRow("Úroková sazba",dA.hypoSazba,dB.hypoSazba,0,1," %"),
-    tblRow("Hypotéka (80% LTV)",uA,uB),
-    tblRow("Měsíční splátka",spA,spB,1),
-    tblRow("Přeplatek za "+roky+" let",prA,prB)
-  ].join("");
-  const vyplatyA=cisA>0?Math.round(cA/cisA):"–";
-  const vyplatyB=cisB>0?Math.round(cB/cisB):"–";
-  const letA=cisA>0?(cA/cisA/12).toFixed(1):"–";
-  const letB=cisB>0?(cB/cisB/12).toFixed(1):"–";
+<div class="c" style="padding:10px"><div class="st">Klíčové události</div>${ev.map(e=>`<details class="ev" style="border-left-color:${e.c}"><summary><span><span class="mn" style="color:${e.c};margin-right:4px;font-size:10px">${e.y}</span>${e.t}</span></summary><div class="td">${e.d}<br><button class="b on" style="margin-top:3px;flex:none;padding:3px 8px;font-size:10px" onclick="sY(${e.a},${e.b})">Porovnat</button></div></details>`).join("")}</div>
 
-  // Auto
-  const autoProf=[
-    {l:"Ojetina 10+",sp:7.5,ser:18000,poj:6000,lea:0},
-    {l:"Ojetina 5–10",sp:6.5,ser:12000,poj:9000,lea:0},
-    {l:"Novější 0–5",sp:5.8,ser:8000,poj:14000,lea:0},
-    {l:"Nové (leasing)",sp:5.5,ser:5000,poj:18000,lea:8500}
-  ];
-  const ap=autoProf[S.autoType];
-  const cpi19=getCPI(2019),iA=cpi19[S.yearA]||1,iB=cpi19[S.yearB]||1;
-  const fA=Math.round(S.km/100*ap.sp*dA.nafta),fB=Math.round(S.km/100*ap.sp*dB.nafta);
-  const seA=Math.round(ap.ser*iA),seB=Math.round(ap.ser*iB);
-  const poA=Math.round(ap.poj*iA),poB=Math.round(ap.poj*iB);
-  const stA=Math.round(2200*iA),stB=Math.round(2200*iB);
-  const paA=Math.round(6000*iA),paB=Math.round(6000*iB);
-  const leA=Math.round(ap.lea*12*iA),leB=Math.round(ap.lea*12*iB);
-  const tA=fA+seA+poA+stA+paA+leA,tB=fB+seB+poB+stB+paB+leB;
-  let autoRowsArr=[
-    {l:"Pohonné hmoty",a:fA,b:fB},{l:"Servis a údržba",a:seA,b:seB},
-    {l:"Pojištění",a:poA,b:poB},{l:"STK + emise + známka",a:stA,b:stB},
-    {l:"Parkování",a:paA,b:paB}
-  ];
-  if(ap.lea>0)autoRowsArr.push({l:"Leasing / splátka",a:leA,b:leB});
-  autoRowsArr.push({l:"Celkem ročně",a:tA,b:tB,bold:1},{l:"Celkem měsíčně",a:Math.round(tA/12),b:Math.round(tB/12),bold:1});
-  const autoRowsHTML=autoRowsArr.map(r=>tblRow(r.l,r.a,r.b,r.bold)).join("");
-  const autoBtns=autoProf.map((p,i)=>`<button class="btn ${S.autoType===i?"on":""}" onclick="S.autoType=${i};render()">${p.l}</button>`).join("");
+<div class="c"><div class="st">Odvody — OSVČ vs zaměstnanec</div><div class="nt">Modrý: zaměstnanec se stejnou hrubou (${S.yB})</div>${H("Zam"+S.yB)}${[R("Hrubý příjem",rA.gm,rB.gm,zB.h),R("−Sociální",rA.sm,rB.sm,zB.sZ),R("−Zdravotní",rA.zm,rB.zm,zB.zZ),R("−Daň",rA.dm_,rB.dm_,zB.dn),R("=Odvody",oA,oB,zO,1),R("=Čistý",cA,cB,zB.c,1)].join("")}
+<details style="margin-top:6px"><summary style="font-size:11px;font-weight:700;cursor:pointer">Náklad zaměstnavatele (${S.yB}) ▾</summary><div style="padding-top:6px">${(()=>{const h=gB,str=Math.round(130*21),msp=S.yB>=2020?990:S.yB>=2017?590:0,pen=gB>=30e3?1500:gB>=20e3?1000:500,t13=Math.round(gB/12),t13o=Math.round(t13*.338),zak=h+zB.sE+zB.zE,sBn=zak+str+msp+pen,s13=sBn+t13+t13o;return`<div class="eg"><span>Hrubá</span><span class="mn">${F(h)}</span><span>+Soc.24,8%</span><span class="mn">${F(zB.sE)}</span><span>+Zdr.9%</span><span class="mn">${F(zB.zE)}</span><span style="font-weight:700">Bez benefitů</span><span class="mn" style="font-weight:700;color:var(--b)">${F(zak)}</span><span style="color:var(--mut)">+Stravenky</span><span class="mn" style="color:var(--mut)">${F(str)}</span>${msp?`<span style="color:var(--mut)">+Multisport</span><span class="mn" style="color:var(--mut)">${F(msp)}</span>`:""}<span style="color:var(--mut)">+Penzijko</span><span class="mn" style="color:var(--mut)">${F(pen)}</span><span style="font-weight:700">S benefity</span><span class="mn" style="font-weight:700;color:var(--b)">${F(sBn)}</span><span style="color:var(--mut)">+13.plat+odvody</span><span class="mn" style="color:var(--mut)">${F(t13+t13o)}</span><span style="font-weight:700">Vč.13.platu</span><span class="mn" style="font-weight:700;color:var(--r)">${F(s13)}</span></div>`})()}</div></details></div>
 
-  // Odvody detail
-  const danLabel=m=>m==="p"?"progresivní":m==="f"?"15 %":"15/23 %";
+<div class="c"><div class="st">Nemovitosti — Praha</div>
+<div class="bg" style="margin-bottom:6px">${["2+kk (55m²)","3+kk (75m²)","Dům (150m²)"].map((l,i)=>`<button class="b ${S.nem===i?"on":""}" onclick="S.nem=${i};render()">${l}</button>`).join("")}</div>
+${(()=>{const typs=[{l:"2+kk",m:55,k:"bm"},{l:"3+kk",m:75,k:"bm"},{l:"Dům",m:150,k:"hm"}],t=typs[S.nem],pl=t.m,m2A=dA[t.k],m2B=dB[t.k],cAb=m2A*pl,cBb=m2B*pl,ltv=S.hlt/100,mes=S.hl*12,uA=cAb*ltv,uB=cBb*ltv,spA=Math.round(AN(uA,dA.hs,mes)),spB=Math.round(AN(uB,dB.hs,mes)),nk=S.nem>=2?"k3":S.nem===1?"k3":"k2",nA=gN(S.yA,nk),nB=gN(S.yB,nk);
+return`<div class="sl"><span>LTV</span><span class="sv">${S.hlt}%</span></div><input type="range" min="50" max="100" step="5" value="${S.hlt}" oninput="S.hlt=+this.value;render()">
+<div class="sl"><span>Splatnost</span><span class="sv">${S.hl} let</span></div><input type="range" min="10" max="35" value="${S.hl}" oninput="S.hl=+this.value;render()">
+<div style="height:4px"></div>${H("")}${[R("Cena/m²",m2A,m2B),R("Cena "+t.l,cAb,cBb),R("Úrok",dA.hs,dB.hs,null,0,1,"%"),R("Hypotéka",uA,uB),R("Splátka/měs",spA,spB,null,1),R("Přeplatek",Math.round(spA*mes-uA),Math.round(spB*mes-uB)),R("Nájem/měs",nA,nB)].join("")}
+<div style="margin-top:4px;padding:5px 8px;border-radius:6px;background:var(--hi);font-size:9px">Výplat na ${t.l}: <b style="color:var(--g)">${cA>0?Math.round(cAb/cA):"–"}m</b> (${S.yA}) vs <b style="color:var(--r)">${cB>0?Math.round(cBb/cB):"–"}m</b> (${S.yB}) · Splátka vs nájem (${S.yB}): ${spB>nB?`splátka +${F(spB-nB)}`:`nájem +${F(nB-spB)}`}</div>`})()}</div>
 
-  document.getElementById("app").innerHTML=`
-  <div class="tag">OSVČ Srovnání</div>
-  <h1>Kolik musíš vydělat,<br>abys žil stejně?</h1>
-  <p class="sub">Roky 2000–2026 · Inflace + odvody + daně + bydlení + auto</p>
+<div class="c"><div class="st">Auto</div>
+${(()=>{const ap=[{l:"Ojetina 10+",s:7.5,se:18e3,po:6e3,pc:120e3},{l:"Ojetina 5–10",s:6.5,se:12e3,po:9e3,pc:300e3},{l:"Novější 0–5",s:5.8,se:8e3,po:14e3,pc:550e3},{l:"Nové",s:5.5,se:5e3,po:18e3,pc:800e3}],a=ap[S.at],c9=CPI(2019),iA_=c9[S.yA]||1,iB_=c9[S.yB]||1,pcA=Math.round(a.pc*iA_),pcB=Math.round(a.pc*iB_),finA=S.alt>0?Math.round(pcA*(S.alt/100)/S.ale/12):0,finB=S.alt>0?Math.round(pcB*(S.alt/100)/S.ale/12):0,fA=Math.round(S.km/100*a.s*dA.n),fB=Math.round(S.km/100*a.s*dB.n),seA=Math.round(a.se*iA_),seB=Math.round(a.se*iB_),poA=Math.round(a.po*iA_),poB=Math.round(a.po*iB_),stA=Math.round(2200*iA_),stB=Math.round(2200*iB_),paA=Math.round(6e3*iA_),paB=Math.round(6e3*iB_),tA=fA+seA+poA+stA+paA+finA*12,tB=fB+seB+poB+stB+paB+finB*12;
+return`<div class="bg" style="margin-bottom:6px">${ap.map((p,i)=>`<button class="b ${S.at===i?"on":""}" onclick="S.at=${i};render()">${p.l}</button>`).join("")}</div>
+<div class="sl"><span>Km/rok</span><span class="sv">${F(S.km)}</span></div><input type="range" min="3000" max="50000" step="1000" value="${S.km}" oninput="S.km=+this.value;render()" style="accent-color:#555">
+<div class="sl"><span>Financování</span><span class="sv">${S.alt}%</span></div><input type="range" min="0" max="100" step="10" value="${S.alt}" oninput="S.alt=+this.value;render()" style="accent-color:#555">
+${S.alt>0?`<div class="sl"><span>Splácení</span><span class="sv">${S.ale} let</span></div><input type="range" min="1" max="7" value="${S.ale}" oninput="S.ale=+this.value;render()" style="accent-color:#555">`:""}
+<div class="nt">${a.s}l/100km · nafta · poříz. ~${F(pcB)} Kč (${S.yB})</div>
+${H("")}${[R("Pořízení/rok",finA*12,finB*12),R("Pohonné hm.",fA,fB),R("Servis",seA,seB),R("Pojištění",poA,poB),R("STK+známka",stA,stB),R("Parkování",paA,paB),R("Celkem/rok",tA,tB,null,1),R("Celkem/měs",Math.round(tA/12),Math.round(tB/12),null,1)].join("")}`})()}</div>
 
-  <div class="card" style="margin-top:16px">
-    <div class="row-flex" style="margin-bottom:12px">
-      <div><label class="sm" style="color:var(--g)">Rok A</label><select class="sel-a" onchange="S.yearA=+this.value;render()">${opts.replace(`value="${S.yearA}"`,`value="${S.yearA}" selected`)}</select></div>
-      <div style="display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px;flex:0 0 30px"><span style="font-size:18px">⇄</span></div>
-      <div><label class="sm" style="color:var(--r)">Rok B</label><select class="sel-b" onchange="S.yearB=+this.value;render()">${opts.replace(`value="${S.yearB}"`,`value="${S.yearB}" selected`)}</select></div>
-    </div>
-    <div class="btn-group" style="margin-bottom:10px">
-      <button class="btn ${S.side==="A"?"on-g":""}" onclick="S.side='A';render()">Zadám příjem z ${S.yearA}</button>
-      <button class="btn ${S.side==="B"?"on-r":""}" onclick="S.side='B';render()">Zadám příjem z ${S.yearB}</button>
-    </div>
-    <div class="slider-wrap">
-      <div class="slider-label">
-        <span style="font-size:12px;font-weight:600">Hrubý měsíční příjem (${S.side==="A"?S.yearA:S.yearB})</span>
-        <span style="display:flex;align-items:baseline;gap:4px">
-          <input type="text" class="num-input" id="amountInput" inputmode="numeric" value="${fmt(S.amount)}" style="color:${S.side==="A"?"var(--g)":"var(--r)"}"
-            onfocus="this.value=S.amount"
-            onblur="handleAmountInput(this)"
-            onkeydown="if(event.key==='Enter'){this.blur()}">
-          <span style="font-size:13px;font-weight:700;color:var(--muted)">Kč</span>
-        </span>
-      </div>
-      <input type="range" min="10000" max="250000" step="1000" value="${S.amount}" oninput="S.amount=+this.value;render()" style="accent-color:${S.side==="A"?"var(--g)":"var(--r)"}">
-      <div class="range-labels"><span>10 000</span><span>250 000</span></div>
-    </div>
-    <div class="btn-group">
-      <button class="btn ${S.pau?"on":""}" onclick="S.pau=true;render()">Paušální 60 %</button>
-      <button class="btn ${!S.pau?"on":""}" onclick="S.pau=false;render()">Skutečné 40 %</button>
-    </div>
-  </div>
+<div class="c"><div class="st">Na co reálně dosáhneš?</div><div class="nt">Z volných peněz po odvodech a životních nákladech</div>
+${(()=>{const ix=CPI(2019),xA=ix[S.yA]||1,xB=ix[S.yB]||1,zvA=Math.round(22e3*xA),zvB=Math.round(22e3*xB),zbA=cA-zvA,zbB=cB-zvB;function SC(l,ic,oA,oB,nA,nB){return`<div class="sc"><div class="ic">${ic}</div><div style="flex:1;min-width:0"><div class="ti">${l}</div><div class="cols"><div class="col ${oA?"ok":"no"}"><b style="color:${oA?"var(--g)":"var(--r)"}">${S.yA}:${oA?"OK":"Těžké"}</b>${nA}</div><div class="col ${oB?"ok":"no"}"><b style="color:${oB?"var(--g)":"var(--r)"}">${S.yB}:${oB?"OK":"Těžké"}</b>${nB}</div></div></div></div>`}const hA=Math.round(AN(dA.bm*55*.8,dA.hs,360)),hB=Math.round(AN(dB.bm*55*.8,dB.hs,360)),rdA=Math.round(15e3*xA),rdB=Math.round(15e3*xB),dvA=Math.round(45e3*xA),dvB=Math.round(45e3*xB);
+return[SC("Vlastní bydlení","🏠",hA<cA*.4,hB<cB*.4,`Splátka ${F(hA)} (${(hA/cA*100).toFixed(0)}%)`,`Splátka ${F(hB)} (${(hB/cB*100).toFixed(0)}%)`),SC("Nové auto","🚗",Math.round(5e5*xA/60)<zbA*.3,Math.round(5e5*xB/60)<zbB*.3,`~${F(Math.round(5e5*xA/60))}/m`,`~${F(Math.round(5e5*xB/60))}/m`),SC("Rodina 2 děti","👨‍👩‍👧‍👦",(cA-zvA-rdA)>5e3,(cB-zvB-rdB)>5e3,`+${F(rdA)}, zb.${F(Math.max(0,cA-zvA-rdA))}`,`+${F(rdB)}, zb.${F(Math.max(0,cB-zvB-rdB))}`),SC("Dovolená","✈️",zbA*3>dvA,zbB*3>dvB,`${F(dvA)}, ${zbA>0?Math.ceil(dvA/zbA):99}m`,`${F(dvB)}, ${zbB>0?Math.ceil(dvB/zbB):99}m`),SC("Spoření","💰",Math.max(0,zbA-rdA)>3e3,Math.max(0,zbB-rdB)>3e3,`~${F(Math.max(0,zbA-rdA))}/m`,`~${F(Math.max(0,zbB-rdB))}/m`)].join("")+`<div style="padding:4px 8px;border-radius:6px;background:#f0ebe4;font-size:9px;color:var(--mut)"><b style="color:#3a3a3a">Volné:</b> čistý−život = <b style="color:var(--g)">${F(zbA)}</b> vs <b style="color:var(--r)">${F(zbB)}</b></div>`})()}
+<div style="text-align:center;margin-top:8px"><a class="lnk" href="osvc-penze.html">Penzijní spoření & DCA investice →</a></div></div>
 
-  <div class="card" style="padding:14px 12px">
-    <div class="sect-title" style="margin-bottom:4px">Klíčové události — tipy na porovnání</div>
-    <div class="note" style="margin-bottom:8px">Klikni na událost a roky se nastaví automaticky</div>
-    <div id="timeline" style="font-size:11px;line-height:1.3">
-    ${[
-      {y:"2004→2008",a:2004,b:2008,t:"Vstup do EU → předkrizový boom",d:"Vstup ČR do EU (2004), levné hypotéky, exploze cen bytů. Zlaté časy pro nemovitosti.",c:"#e8a33d"},
-      {y:"2007→2009",a:2007,b:2009,t:"Světová finanční krize",d:"Pád Lehman Brothers. Ceny bytů v Praze −18 %. Konec progresivní daně, přechod na flat 15 % (2008).",c:"var(--r)"},
-      {y:"2008→2013",a:2008,b:2013,t:"Daňová reforma + stagnace",d:"Superhrubá mzda (2008–2020). Sleva na poplatníka skok na 24 840 Kč. Úroky hypoték klesají.",c:"#5b7ab5"},
-      {y:"2013→2016",a:2013,b:2016,t:"Éra levných peněz",d:"ČNB drží nulové sazby a oslabuje korunu. Historicky nejnižší hypotéky (~2 %). Ceny bytů startují raketový růst.",c:"var(--g)"},
-      {y:"2016→2019",a:2016,b:2019,t:"Boom před covidem",d:"Ceny bytů v Praze +80 % za 3 roky. Mzdy rostou, nezaměstnanost rekordně nízká. Sazby hypoték začínají stoupat.",c:"#e8a33d"},
-      {y:"2019→2022",a:2019,b:2022,t:"Covid → inflační šok",d:"Pandemie, pak energetická krize a válka na Ukrajině. Inflace 15,1 % (2022) — nejvyšší od 1993. ČNB zvedá sazby na 7 %.",c:"var(--r)"},
-      {y:"2019→2026",a:2019,b:2026,t:"Celý inflační cyklus",d:"Kumulativní inflace ~35 %. Odvody OSVČ zdvojnásobeny (konsolidační balíček). Byty z 63k na 157k/m².",c:"var(--r)"},
-      {y:"2021→2023",a:2021,b:2023,t:"Hypoteční šok",d:"Sazby z 2 % na 6 %. Hypotéky zdražily o 80 %. Trh s byty zamrzl, ale ceny neklesly.",c:"#5b7ab5"},
-      {y:"2023→2026",a:2023,b:2026,t:"Konsolidační balíček",d:"Sociální VZ OSVČ z 50 % na 55 %. Dvě daňová pásma 15/23 %. Zaměstnanci platí nemocenskou (0,6 %). Min. zálohy OSVČ z 5 667 na 9 026 Kč.",c:"var(--r)"},
-      {y:"2000→2026",a:2000,b:2026,t:"Čtvrtstoletí změn",d:"Progresivní daň → flat → dvě pásma. Koruna 36→25 za EUR. Byty 15k→157k/m². Průměrná mzda 13k→49k.",c:"#3a3a3a"},
-    ].map(e=>`
-      <div onclick="S.yearA=${e.a};S.yearB=${e.b};render();this.scrollIntoView({behavior:'smooth',block:'center'})" 
-        style="display:flex;gap:8px;padding:8px 8px;margin-bottom:4px;border-radius:8px;cursor:pointer;border-left:3px solid ${e.c};background:${S.yearA===e.a&&S.yearB===e.b?'#f5f0eb':'transparent'};transition:.15s"
-        onmouseover="this.style.background='#f5f0eb'" onmouseout="this.style.background='${S.yearA===e.a&&S.yearB===e.b?'#f5f0eb':'transparent'}'">
-        <div style="min-width:64px;font-family:var(--mono);font-weight:700;font-size:10px;color:${e.c};padding-top:1px">${e.y}</div>
-        <div>
-          <div style="font-weight:700;font-size:12px;color:#2a2520">${e.t}</div>
-          <div style="font-size:10px;color:var(--muted);margin-top:1px">${e.d}</div>
-        </div>
-      </div>
-    `).join("")}
-    </div>
-  </div>
-
-  <div class="result-cards">
-    <div class="rcard rcard-a"><div class="lbl" style="color:var(--g)">OSVČ ${S.yearA}</div><div class="big" style="color:#3a5a3f">${fmt(grossA)} Kč</div><div class="sm" style="color:#7a9a7f">čistý: ${fmt(cisA)} Kč</div></div>
-    <div class="rcard rcard-b"><div class="lbl" style="opacity:.8">OSVČ ${S.yearB}</div><div class="big">${fmt(grossB)} Kč</div><div class="sm">čistý: ${fmt(cisB)} Kč</div></div>
-    <div class="rcard" style="background:#eef2f8;border:2px solid #5b7ab5"><div class="lbl" style="color:#5b7ab5">Zam. ${S.yearB}</div><div class="big" style="color:#3a4f6f;font-size:20px">${fmt(grossB)} Kč</div><div class="sm" style="color:#7a8faa">čistý: ${fmt(zB.cisty)} Kč</div></div>
-  </div>
-
-  <div class="card">
-    <div class="diff-box">
-      <div><div class="diff-sub">Rozdíl v hrubém</div><div class="diff-num" style="color:${gDiff>0?"var(--r)":"var(--g)"}">${gDiff>0?"+":""}${fmt(gDiff)} Kč</div><div class="diff-sub">${gDiff>0?"+":""}${gPct} %</div></div>
-      <div class="divider"><div class="diff-sub">Kumulativní inflace</div><div class="diff-num" style="color:#e8a33d">${inflPct} %</div><div class="diff-sub">${S.yearA} → ${S.yearB}</div></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="sect-title">Měsíční srovnání — OSVČ vs zaměstnanec</div>
-    <div class="note">Třetí sloupec: zaměstnanec se stejnou hrubou mzdou v roce ${S.yearB}</div>
-    ${tblHead()}${osvcRows}
-    <div class="vline" style="font-size:11px">
-      <div style="margin-bottom:6px"><b>Celkový náklad zaměstnavatele (${S.yearB}):</b></div>
-      ${(()=>{
-        const h=zB.hruba;
-        // Typické benefity (měsíční)
-        const stravenky=Math.round(130*21); // ~130 Kč/den × 21 směn
-        const multisport=Math.round(S.yearB>=2020?990:S.yearB>=2017?590:0); // cca cena Multisport
-        const penze=Math.round(h>=30000?1500:h>=20000?1000:500); // příspěvek na penzijko
-        const trinacty=Math.round(h/12); // 13. plat rozpočítaný na měsíc (=1 hrubá/12)
-        const trinactyOdvody=Math.round(trinacty*0.338);
-        const benefityCelkem=stravenky+multisport+penze;
-        const zamtelOdvody=zB.socZamtel+zB.zdrZamtel;
-        const zaklad=h+zamtelOdvody;
-        const sBenefity=zaklad+benefityCelkem;
-        const s13=sBenefity+trinacty+trinactyOdvody;
-        return `
-        <div style="display:grid;grid-template-columns:1fr auto;gap:2px 8px;font-size:11px;line-height:1.8">
-          <span>Hrubá mzda</span><span class="mono" style="color:#3a3a3a">${fmt(h)} Kč</span>
-          <span>+ Soc. poj. zaměstnavatel (24,8 %)</span><span class="mono" style="color:#3a3a3a">${fmt(zB.socZamtel)} Kč</span>
-          <span>+ Zdr. poj. zaměstnavatel (9 %)</span><span class="mono" style="color:#3a3a3a">${fmt(zB.zdrZamtel)} Kč</span>
-          <span style="font-weight:700">= Základ bez benefitů</span><span class="mono" style="font-weight:700;color:#5b7ab5">${fmt(zaklad)} Kč</span>
-          <span style="color:var(--muted)">+ Stravenky (~${fmt(130)} Kč × 21 dnů)</span><span class="mono" style="color:var(--muted)">${fmt(stravenky)} Kč</span>
-          ${multisport>0?`<span style="color:var(--muted)">+ Multisport karta</span><span class="mono" style="color:var(--muted)">${fmt(multisport)} Kč</span>`:""}
-          <span style="color:var(--muted)">+ Příspěvek na penzijko</span><span class="mono" style="color:var(--muted)">${fmt(penze)} Kč</span>
-          <span style="font-weight:700">= S typickými benefity</span><span class="mono" style="font-weight:700;color:#5b7ab5">${fmt(sBenefity)} Kč</span>
-          <span style="color:var(--muted)">+ 13. plat (měsíčně)</span><span class="mono" style="color:var(--muted)">${fmt(trinacty)} Kč</span>
-          <span style="color:var(--muted)">&nbsp;&nbsp;+ odvody z 13. platu</span><span class="mono" style="color:var(--muted)">${fmt(trinactyOdvody)} Kč</span>
-          <span style="font-weight:700">= Vč. 13. platu a benefitů</span><span class="mono" style="font-weight:700;color:var(--r)">${fmt(s13)} Kč</span>
-        </div>
-        <div style="margin-top:8px;font-size:10px;color:#b0a99f">Stravenky: osvobozeno do ${S.yearB>=2026?"129,50":"123,90"} Kč/směnu. Penzijko: do 50 000 Kč/rok bez odvodů. Multisport: volnočasový benefit (limit ${S.yearB>=2026?"24 484":"23 279"} Kč/rok).</div>
-        `;
-      })()}
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="sect-title">Nemovitosti — byt 2+kk v Praze</div>
-    <div class="note">Model: ${pl} m², 80 % LTV, ${roky} let splatnost</div>
-    ${tblHead("")}${reRows}
-    <div class="vline" style="font-size:11px">
-      <div>Čistých výplat na byt (${S.yearA}): <b style="color:var(--g)">${vyplatyA} měs.</b> <span style="font-size:10px;color:#b0a99f">(${letA} let)</span></div>
-      <div>Čistých výplat na byt (${S.yearB}): <b style="color:var(--r)">${vyplatyB} měs.</b> <span style="font-size:10px;color:#b0a99f">(${letB} let)</span></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="sect-title">Náklady na auto</div>
-    <div class="btn-group" style="margin-bottom:10px">${autoBtns}</div>
-    <div class="slider-wrap">
-      <div class="slider-label"><span style="font-size:12px;font-weight:600">Nájezd ročně</span><span class="slider-val" style="font-size:16px">${fmt(S.km)} km</span></div>
-      <input type="range" min="3000" max="50000" step="1000" value="${S.km}" oninput="S.km=+this.value;render()" style="accent-color:#555">
-      <div class="range-labels"><span>3 000</span><span>50 000</span></div>
-    </div>
-    <div class="note">Spotřeba: ${ap.sp} l/100km · Nafta · Ceny indexovány dle inflace</div>
-    ${tblHead("")}${autoRowsHTML}
-  </div>
-
-  <div class="card">
-    <div class="sect-title">Parametry odvodů</div>
-    <div class="detail-row">
-      <div class="detail-col"><div style="font-weight:700;color:var(--g);margin-bottom:4px">${S.yearA}</div>
-        <div>Min. soc.: <b>${fmt(dA.minSoc)} Kč</b>/měs</div><div>Min. zdr.: <b>${fmt(dA.minZdr)} Kč</b>/měs</div>
-        <div>Sleva: <b>${fmt(dA.slevaPoplatnik)} Kč</b>/rok</div><div>Soc. VZ: <b>${(dA.socVZ*100).toFixed(0)}%</b> DZ</div>
-        <div>Daň: <b>${danLabel(dA.danMode)}</b></div></div>
-      <div class="detail-col"><div style="font-weight:700;color:var(--r);margin-bottom:4px">${S.yearB}</div>
-        <div>Min. soc.: <b>${fmt(dB.minSoc)} Kč</b>/měs</div><div>Min. zdr.: <b>${fmt(dB.minZdr)} Kč</b>/měs</div>
-        <div>Sleva: <b>${fmt(dB.slevaPoplatnik)} Kč</b>/rok</div><div>Soc. VZ: <b>${(dB.socVZ*100).toFixed(0)}%</b> DZ</div>
-        <div>Daň: <b>${danLabel(dB.danMode)}</b></div></div>
-    </div>
-  </div>
-
-  <div class="meth">
-    <p><b>Metodika</b></p>
-    <p>Inflace: průměrná roční míra dle ČSÚ. Kumulativní inflace ${S.yearA}→${S.yearB}: <b>${inflPct} %</b>.</p>
-    <p>Odvody: sazba soc. 29,2 %, zdr. 13,5 %. VZ sociální = ${S.yearB>=2024?"55":"50"} % DZ (od 2024), zdravotní = 50 % DZ.</p>
-    <p>Daně: Do 2007 progresivní (15–32 %), 2008–2023 flat 15 %, od 2024 dvě pásma 15/23 %.</p>
-    <p>Sleva na poplatníka: do 2004 0 Kč, 2005–07 7 200 Kč, 2008–20 24 840 Kč, 2021 27 840 Kč, od 2022 30 840 Kč.</p>
-    <p>Nemovitosti: prům. cena bytu/m² Praha (ČSÚ do 2019, Deloitte/RE/MAX od 2020). Hypo sazby: ČBA Hypomonitor.</p>
-    <p>Auto: ceny nafty dle MPO/CCS. Servis, pojištění, STK, parkování indexovány inflací od 2019.</p>
-  </div>
-  <div class="footer">Zdroje: ČSÚ, ČSSZ, VZP, MPO, ČBA, Deloitte · Orientační výpočet · 2026</div>
-  `;
-}
-function handleAmountInput(el){
-  const raw=el.value.replace(/[^0-9]/g,"");
-  let v=parseInt(raw,10);
-  if(isNaN(v)||v<1000)v=10000;
-  if(v>999000)v=999000;
-  S.amount=v;render();
+<div class="mt"><p><b>Zdroje:</b> ČSÚ · ČSSZ · VZP · MPO · ČBA · Deloitte · RE/MAX · Maxima Reality</p><p>Inflace dle ČSÚ. Odvody soc.29,2% zdr.13,5%. Daně: progresivní→flat 15%→dual 15/23%. Nemovitosti: průměr Praha. Domy: Praha-okolí. Nájmy: Bezrealitky/UlovDomov. Auto: nafta MPO/CCS. Orientační výpočet.</p></div><div class="ft">OSVČ Kalkulačka v3 · 2000–2026</div>`;
 }
 render();
 </script>
