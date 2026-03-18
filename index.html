@@ -47,12 +47,8 @@ input[type=range]{width:100%;margin:3px 0}
 .sc .col{flex:1 1 100px;padding:4px 5px;border-radius:4px;font-size:9px}
 .sc .col b{display:block;margin-bottom:1px}
 .sc .ok{background:#edf5ef}.sc .no{background:#fdf0ee}
-details.ev{margin-bottom:3px;border-left:3px solid #ddd;border-radius:0}
-details.ev summary{padding:5px 8px;cursor:pointer;list-style:none;font-size:11px;font-weight:600;display:flex;justify-content:space-between;align-items:center}
-details.ev summary::after{content:"▸";font-size:10px;color:#bbb;transition:.2s}
-details.ev[open] summary::after{transform:rotate(90deg)}
-details.ev summary::-webkit-details-marker{display:none}
-details.ev .td{padding:4px 8px 8px;font-size:9.5px;color:var(--mut)}
+details.c summary::-webkit-details-marker{display:none}
+details.c[open] .tla{transform:rotate(180deg)}
 .sl{display:flex;justify-content:space-between;align-items:baseline;font-size:11px;margin-bottom:1px}
 .sv{font-family:var(--m);font-size:14px;font-weight:700}
 .mt{background:#f5f0eb;border-radius:10px;padding:10px;font-size:9px;color:var(--mut);line-height:1.5;margin-bottom:10px}
@@ -77,7 +73,9 @@ function FG(t,y,p){let lo=t,hi=t*4;for(let i=0;i<60;i++){const m=(lo+hi)/2;OC(m,
 function ZM(h,y){const d=DB[y];let zs,zz,es,ez;if(y<=2008){zs=.08;zz=.045;es=.26;ez=.09}else if(y<=2018){zs=.065;zz=.045;es=.25;ez=.09}else if(y<=2023){zs=.065;zz=.045;es=.248;ez=.09}else{zs=.071;zz=.045;es=.248;ez=.09}const sZ=Math.round(h*zs),zZ=Math.round(h*zz),sE=Math.round(h*es),zE=Math.round(h*ez);let dn;if(y>=2008&&y<=2020)dn=Math.max(0,Math.ceil(Math.ceil(h*(1+es+ez))*.15)-Math.round(d.sl/12));else if(y>=2021){const lm=d.ld?Math.round(d.ld/12):9e9;dn=h<=lm||y<=2023?Math.max(0,Math.ceil(h*.15)-Math.round(d.sl/12)):Math.max(0,Math.ceil(lm*.15+(h-lm)*.23)-Math.round(d.sl/12))}else{const r=h*12;let t=0;if(r<=109200)t=r*.15;else if(r<=218400)t=109200*.15+(r-109200)*.2;else if(r<=331200)t=109200*.15+109200*.2+(r-218400)*.25;else t=109200*.15+109200*.2+112800*.25+(r-331200)*.32;dn=Math.max(0,Math.round(t/12)-Math.round(d.sl/12))}return{h,sZ,zZ,dn,c:h-sZ-zZ-dn,sE,zE,tot:h+sE+zE}}
 function AN(p,r,n){const m=r/100/12;return m===0?p/n:p*m*Math.pow(1+m,n)/(Math.pow(1+m,n)-1)}
 
-let S={yA:2019,yB:2026,amt:45000,side:"A",pau:true,at:0,km:15000,nem:0,hl:30,hlt:80,af:0,alt:100,ale:5};
+let S={yA:2019,yB:2026,amt:45000,side:"A",pau:true,at:0,km:15000,nem:0,hl:30,hlt:80,af:0,alt:100,ale:5,
+  pMes:1000,pStart:0,pZam:500,pUrok:3,pLet:30,
+  dMes:3000,dUrok:10,dLet:30};
 const sel=v=>YRS.map(y=>`<option value="${y}"${y===v?" selected":""}>${y}</option>`).join("");
 function hI(el,f){const v=parseInt(el.value.replace(/\D/g,""),10);S[f]=isNaN(v)||v<1000?10000:Math.min(v,999000);render()}
 function sY(a,b){S.yA=a;S.yB=b;render()}
@@ -106,7 +104,21 @@ document.getElementById("app").innerHTML=`
 
 <div class="c"><div class="db"><div><div class="ds">Rozdíl</div><div class="dn" style="color:${gD>0?"var(--r)":"var(--g)"}">${gD>0?"+":""}${F(gD)}</div><div class="ds">${gD>0?"+":""}${gP}%</div></div><div class="dv"><div class="ds">Inflace</div><div class="dn" style="color:#e8a33d">${iP}%</div><div class="ds">${S.yA}→${S.yB}</div></div></div></div>
 
-<div class="c" style="padding:10px"><div class="st">Klíčové události</div>${ev.map(e=>`<details class="ev" style="border-left-color:${e.c}"><summary><span><span class="mn" style="color:${e.c};margin-right:4px;font-size:10px">${e.y}</span>${e.t}</span></summary><div class="td">${e.d}<br><button class="b on" style="margin-top:3px;flex:none;padding:3px 8px;font-size:10px" onclick="sY(${e.a},${e.b})">Porovnat</button></div></details>`).join("")}</div>
+<details class="c" style="padding:10px;cursor:pointer">
+<summary style="display:flex;justify-content:space-between;align-items:center;list-style:none;font-size:13px;font-weight:700;margin:-2px 0">
+<span>Klíčové události — tipy na porovnání</span><span style="font-size:11px;color:#bbb;transition:.2s" class="tla">▾</span>
+</summary>
+<div style="margin-top:10px">
+${ev.map(e=>`
+<div onclick="sY(${e.a},${e.b})" style="display:flex;gap:10px;padding:9px 8px;margin-bottom:5px;border-radius:8px;cursor:pointer;border-left:3px solid ${e.c};background:${S.yA===e.a&&S.yB===e.b?'var(--hi)':'transparent'};transition:.15s" onmouseover="this.style.background='var(--hi)'" onmouseout="this.style.background='${S.yA===e.a&&S.yB===e.b?'var(--hi)':'transparent'}'">
+  <div style="min-width:58px;font-family:var(--m);font-weight:700;font-size:10px;color:${e.c};padding-top:1px">${e.y}</div>
+  <div>
+    <div style="font-weight:700;font-size:12px;color:#2a2520">${e.t}</div>
+    <div style="font-size:10px;color:var(--mut);margin-top:2px">${e.d}</div>
+  </div>
+</div>`).join("")}
+</div>
+</details>
 
 <div class="c"><div class="st">Odvody — OSVČ vs zaměstnanec</div><div class="nt">Modrý: zaměstnanec se stejnou hrubou (${S.yB})</div>${H("Zam"+S.yB)}${[R("Hrubý příjem",rA.gm,rB.gm,zB.h),R("−Sociální",rA.sm,rB.sm,zB.sZ),R("−Zdravotní",rA.zm,rB.zm,zB.zZ),R("−Daň",rA.dm_,rB.dm_,zB.dn),R("=Odvody",oA,oB,zO,1),R("=Čistý",cA,cB,zB.c,1)].join("")}
 <details style="margin-top:6px"><summary style="font-size:11px;font-weight:700;cursor:pointer">Náklad zaměstnavatele (${S.yB}) ▾</summary><div style="padding-top:6px">${(()=>{const h=gB,str=Math.round(130*21),msp=S.yB>=2020?990:S.yB>=2017?590:0,pen=gB>=30e3?1500:gB>=20e3?1000:500,t13=Math.round(gB/12),t13o=Math.round(t13*.338),zak=h+zB.sE+zB.zE,sBn=zak+str+msp+pen,s13=sBn+t13+t13o;return`<div class="eg"><span>Hrubá</span><span class="mn">${F(h)}</span><span>+Soc.24,8%</span><span class="mn">${F(zB.sE)}</span><span>+Zdr.9%</span><span class="mn">${F(zB.zE)}</span><span style="font-weight:700">Bez benefitů</span><span class="mn" style="font-weight:700;color:var(--b)">${F(zak)}</span><span style="color:var(--mut)">+Stravenky</span><span class="mn" style="color:var(--mut)">${F(str)}</span>${msp?`<span style="color:var(--mut)">+Multisport</span><span class="mn" style="color:var(--mut)">${F(msp)}</span>`:""}<span style="color:var(--mut)">+Penzijko</span><span class="mn" style="color:var(--mut)">${F(pen)}</span><span style="font-weight:700">S benefity</span><span class="mn" style="font-weight:700;color:var(--b)">${F(sBn)}</span><span style="color:var(--mut)">+13.plat+odvody</span><span class="mn" style="color:var(--mut)">${F(t13+t13o)}</span><span style="font-weight:700">Vč.13.platu</span><span class="mn" style="font-weight:700;color:var(--r)">${F(s13)}</span></div>`})()}</div></details></div>
@@ -128,10 +140,118 @@ ${S.alt>0?`<div class="sl"><span>Splácení</span><span class="sv">${S.ale} let<
 <div class="nt">${a.s}l/100km · nafta · poříz. ~${F(pcB)} Kč (${S.yB})</div>
 ${H("")}${[R("Pořízení/rok",finA*12,finB*12),R("Pohonné hm.",fA,fB),R("Servis",seA,seB),R("Pojištění",poA,poB),R("STK+známka",stA,stB),R("Parkování",paA,paB),R("Celkem/rok",tA,tB,null,1),R("Celkem/měs",Math.round(tA/12),Math.round(tB/12),null,1)].join("")}`})()}</div>
 
-<div class="c"><div class="st">Na co reálně dosáhneš?</div><div class="nt">Z volných peněz po odvodech a životních nákladech</div>
-${(()=>{const ix=CPI(2019),xA=ix[S.yA]||1,xB=ix[S.yB]||1,zvA=Math.round(22e3*xA),zvB=Math.round(22e3*xB),zbA=cA-zvA,zbB=cB-zvB;function SC(l,ic,oA,oB,nA,nB){return`<div class="sc"><div class="ic">${ic}</div><div style="flex:1;min-width:0"><div class="ti">${l}</div><div class="cols"><div class="col ${oA?"ok":"no"}"><b style="color:${oA?"var(--g)":"var(--r)"}">${S.yA}:${oA?"OK":"Těžké"}</b>${nA}</div><div class="col ${oB?"ok":"no"}"><b style="color:${oB?"var(--g)":"var(--r)"}">${S.yB}:${oB?"OK":"Těžké"}</b>${nB}</div></div></div></div>`}const hA=Math.round(AN(dA.bm*55*.8,dA.hs,360)),hB=Math.round(AN(dB.bm*55*.8,dB.hs,360)),rdA=Math.round(15e3*xA),rdB=Math.round(15e3*xB),dvA=Math.round(45e3*xA),dvB=Math.round(45e3*xB);
-return[SC("Vlastní bydlení","🏠",hA<cA*.4,hB<cB*.4,`Splátka ${F(hA)} (${(hA/cA*100).toFixed(0)}%)`,`Splátka ${F(hB)} (${(hB/cB*100).toFixed(0)}%)`),SC("Nové auto","🚗",Math.round(5e5*xA/60)<zbA*.3,Math.round(5e5*xB/60)<zbB*.3,`~${F(Math.round(5e5*xA/60))}/m`,`~${F(Math.round(5e5*xB/60))}/m`),SC("Rodina 2 děti","👨‍👩‍👧‍👦",(cA-zvA-rdA)>5e3,(cB-zvB-rdB)>5e3,`+${F(rdA)}, zb.${F(Math.max(0,cA-zvA-rdA))}`,`+${F(rdB)}, zb.${F(Math.max(0,cB-zvB-rdB))}`),SC("Dovolená","✈️",zbA*3>dvA,zbB*3>dvB,`${F(dvA)}, ${zbA>0?Math.ceil(dvA/zbA):99}m`,`${F(dvB)}, ${zbB>0?Math.ceil(dvB/zbB):99}m`),SC("Spoření","💰",Math.max(0,zbA-rdA)>3e3,Math.max(0,zbB-rdB)>3e3,`~${F(Math.max(0,zbA-rdA))}/m`,`~${F(Math.max(0,zbB-rdB))}/m`)].join("")+`<div style="padding:4px 8px;border-radius:6px;background:#f0ebe4;font-size:9px;color:var(--mut)"><b style="color:#3a3a3a">Volné:</b> čistý−život = <b style="color:var(--g)">${F(zbA)}</b> vs <b style="color:var(--r)">${F(zbB)}</b></div>`})()}
-<div style="text-align:center;margin-top:8px"><a class="lnk" href="osvc-penze.html">Penzijní spoření & DCA investice →</a></div></div>
+<div class="c"><div class="st">Penzijní spoření</div>
+<div class="nt">Kolik naspoříte do důchodu s příspěvkem zaměstnavatele a státním příspěvkem</div>
+${(()=>{
+  const m=S.pMes,z=S.pZam,r=S.pUrok/100,let_=S.pLet,start=S.pStart;
+  // Státní příspěvek: 20% z vkladu, max 340 Kč (od vkladu 500+, max z 1700)
+  const stat=m>=500?Math.min(Math.floor(m*.2),340):0;
+  const celkMes=m+z+stat;
+  // Složené úročení měsíčně
+  const rm=r/12,n=let_*12;
+  let val=start;
+  const tabulka=[];
+  let vloz=0,vynosy=0;
+  for(let i=1;i<=n;i++){
+    val=val*(1+rm)+celkMes;
+    vloz+=celkMes;
+    if(i%(let_>20?60:let_>10?36:12)===0||i===n){
+      vynosy=val-start-vloz;
+      tabulka.push({rok:Math.round(i/12),vloz:Math.round(start+vloz),vynosy:Math.round(vynosy),celk:Math.round(val)});
+    }
+  }
+  const koncVal=Math.round(val),koncVloz=Math.round(start+vloz),koncVynos=Math.round(val-start-vloz);
+  return`
+  <div class="sl"><span>Vlastní vklad/měs</span><span class="sv">${F(m)} Kč</span></div>
+  <input type="range" min="300" max="5000" step="100" value="${m}" oninput="S.pMes=+this.value;render()">
+  <div class="sl"><span>Příspěvek zaměstnavatele</span><span class="sv">${F(z)} Kč</span></div>
+  <input type="range" min="0" max="3000" step="100" value="${z}" oninput="S.pZam=+this.value;render()">
+  <div class="sl"><span>Počáteční stav</span><span class="sv">${F(start)} Kč</span></div>
+  <input type="range" min="0" max="500000" step="10000" value="${start}" oninput="S.pStart=+this.value;render()">
+  <div class="sl"><span>Úroková sazba</span><span class="sv">${S.pUrok} %</span></div>
+  <input type="range" min="1" max="8" step=".5" value="${S.pUrok}" oninput="S.pUrok=+this.value;render()">
+  <div class="sl"><span>Horizont</span><span class="sv">${let_} let</span></div>
+  <input type="range" min="5" max="45" value="${let_}" oninput="S.pLet=+this.value;render()">
+  <div style="margin-top:6px;padding:8px;border-radius:8px;background:var(--hi);font-size:10px">
+    Státní příspěvek: <b>${F(stat)} Kč/měs</b> · Celkem měsíčně: <b>${F(celkMes)} Kč</b> (vy ${F(m)} + zaměstnavatel ${F(z)} + stát ${F(stat)})
+  </div>
+  <div style="margin:8px 0;display:flex;gap:8px;flex-wrap:wrap">
+    <div style="flex:1 1 100px;padding:8px;border-radius:8px;background:#f0f7f1;text-align:center"><div style="font-size:9px;color:var(--g);font-weight:700">VLOŽENO</div><div style="font-size:16px;font-weight:800;font-family:var(--m);color:#3a5a3f">${F(koncVloz)}</div></div>
+    <div style="flex:1 1 100px;padding:8px;border-radius:8px;background:#fdf0ee;text-align:center"><div style="font-size:9px;color:var(--r);font-weight:700">VÝNOSY</div><div style="font-size:16px;font-weight:800;font-family:var(--m);color:var(--r)">${F(koncVynos)}</div></div>
+    <div style="flex:1 1 100px;padding:8px;border-radius:8px;background:#eef2f8;text-align:center"><div style="font-size:9px;color:var(--b);font-weight:700">CELKEM</div><div style="font-size:16px;font-weight:800;font-family:var(--m);color:#3a4f6f">${F(koncVal)}</div></div>
+  </div>
+  <details><summary style="font-size:11px;font-weight:700;cursor:pointer">Vývoj po letech ▾</summary>
+  <div style="padding-top:6px"><div class="th" style="grid-template-columns:40px 1fr 1fr 1fr"><div>Rok</div><div style="text-align:right">Vloženo</div><div style="text-align:right">Výnosy</div><div style="text-align:right">Celkem</div></div>
+  ${tabulka.map(r=>`<div class="tr" style="grid-template-columns:40px 1fr 1fr 1fr"><span>${r.rok}</span><span class="mn" style="color:var(--g)">${F(r.vloz)}</span><span class="mn" style="color:var(--r)">${F(r.vynosy)}</span><span class="mn" style="color:var(--b);font-weight:700">${F(r.celk)}</span></div>`).join("")}
+  </div></details>`;
+})()}
+</div>
+
+<div class="c"><div class="st">DCA investice — pravidelné investování</div>
+<div class="nt">Simulace pravidelného investování (S&P 500 průměr ~10 % p.a.)</div>
+${(()=>{
+  const m=S.dMes,r=S.dUrok/100,let_=S.dLet;
+  const rm=r/12,n=let_*12;
+  // Hlavní výpočet
+  let val=0,vloz=0;
+  const tab=[];
+  for(let i=1;i<=n;i++){
+    val=val*(1+rm)+m;
+    vloz+=m;
+    if(i%(let_>20?60:let_>10?36:12)===0||i===n){
+      tab.push({rok:Math.round(i/12),vloz:Math.round(vloz),vynosy:Math.round(val-vloz),celk:Math.round(val)});
+    }
+  }
+  // Porovnání scénářů
+  function dcaCalc(rate,years,monthly){let v=0;for(let i=0;i<years*12;i++)v=v*(1+rate/100/12)+monthly;return Math.round(v)}
+  const sc=[
+    {l:"Konzervativní",r:4,v:dcaCalc(4,let_,m)},
+    {l:"Vyvážený",r:7,v:dcaCalc(7,let_,m)},
+    {l:"S&P 500",r:10,v:dcaCalc(10,let_,m)},
+    {l:"Agresivní",r:12,v:dcaCalc(12,let_,m)},
+  ];
+  const celkVloz=m*12*let_;
+  return`
+  <div class="sl"><span>Měsíční investice</span><span class="sv">${F(m)} Kč</span></div>
+  <input type="range" min="500" max="30000" step="500" value="${m}" oninput="S.dMes=+this.value;render()">
+  <div class="sl"><span>Očekávaný výnos p.a.</span><span class="sv">${S.dUrok} %</span></div>
+  <input type="range" min="3" max="15" step="1" value="${S.dUrok}" oninput="S.dUrok=+this.value;render()">
+  <div class="sl"><span>Horizont</span><span class="sv">${let_} let</span></div>
+  <input type="range" min="5" max="45" value="${let_}" oninput="S.dLet=+this.value;render()">
+  <div style="margin:8px 0;display:flex;gap:8px;flex-wrap:wrap">
+    <div style="flex:1 1 100px;padding:8px;border-radius:8px;background:#f0f7f1;text-align:center"><div style="font-size:9px;color:var(--g);font-weight:700">VLOŽENO</div><div style="font-size:16px;font-weight:800;font-family:var(--m);color:#3a5a3f">${F(celkVloz)}</div></div>
+    <div style="flex:1 1 100px;padding:8px;border-radius:8px;background:#fdf0ee;text-align:center"><div style="font-size:9px;color:var(--r);font-weight:700">VÝNOSY</div><div style="font-size:16px;font-weight:800;font-family:var(--m);color:var(--r)">${F(Math.round(val-vloz))}</div></div>
+    <div style="flex:1 1 100px;padding:8px;border-radius:8px;background:#eef2f8;text-align:center"><div style="font-size:9px;color:var(--b);font-weight:700">CELKEM</div><div style="font-size:16px;font-weight:800;font-family:var(--m);color:#3a4f6f">${F(Math.round(val))}</div></div>
+  </div>
+  <div class="st" style="margin-top:8px">Porovnání scénářů (${let_} let, ${F(m)} Kč/měs)</div>
+  <div class="th" style="grid-template-columns:1fr 50px 75px 75px"><div>Scénář</div><div style="text-align:right">p.a.</div><div style="text-align:right">Celkem</div><div style="text-align:right">Výnos</div></div>
+  ${sc.map(s=>`<div class="tr${s.r===S.dUrok?" bo":""}" style="grid-template-columns:1fr 50px 75px 75px"><span>${s.l}</span><span class="mn">${s.r}%</span><span class="mn" style="color:var(--b);font-weight:700">${F(s.v)}</span><span class="mn" style="color:var(--r)">${F(s.v-celkVloz)}</span></div>`).join("")}
+  <details style="margin-top:6px"><summary style="font-size:11px;font-weight:700;cursor:pointer">Vývoj po letech (${S.dUrok}%) ▾</summary>
+  <div style="padding-top:6px"><div class="th" style="grid-template-columns:40px 1fr 1fr 1fr"><div>Rok</div><div style="text-align:right">Vloženo</div><div style="text-align:right">Výnosy</div><div style="text-align:right">Celkem</div></div>
+  ${tab.map(r=>`<div class="tr" style="grid-template-columns:40px 1fr 1fr 1fr"><span>${r.rok}</span><span class="mn" style="color:var(--g)">${F(r.vloz)}</span><span class="mn" style="color:var(--r)">${F(r.vynosy)}</span><span class="mn" style="color:var(--b);font-weight:700">${F(r.celk)}</span></div>`).join("")}
+  </div></details>
+  <div style="margin-top:6px;padding:5px 8px;border-radius:6px;background:#f0ebe4;font-size:9px;color:var(--mut)"><b style="color:#3a3a3a">Pozn.:</b> Reálný výnos kolísá. S&P 500 historický průměr ~10% p.a. zahrnuje roky s -30% i +30%. DCA (Dollar Cost Averaging) vyhlazuje volatilitu. Výpočet nezohledňuje daně z výnosů (15%) ani poplatky fondů.</div>`;
+})()}
+</div>
+
+<div class="c">
+<div class="st">Kde začít investovat?</div>
+<div class="nt">Revolut — vše v jedné aplikaci: účet, karta, investice, crypto</div>
+<div style="padding:10px;border-radius:8px;background:var(--hi);font-size:10.5px;line-height:1.7">
+<p style="margin:0 0 6px"><b>Co Revolut umí:</b></p>
+<p style="margin:0 0 3px">📈 <b>Akcie & ETF</b> — nákup S&P 500 ETF (např. VUSA, CSPX) bez poplatků za obchod. Ideální pro DCA — nastavíš automatický nákup každý měsíc.</p>
+<p style="margin:0 0 3px">🥇 <b>Zlato & komodity</b> — nákup fyzického zlata i komoditních ETF. Zlato jako ochrana proti inflaci, historicky ~7% p.a.</p>
+<p style="margin:0 0 3px">₿ <b>Kryptoměny</b> — Bitcoin, Ethereum a dalších 100+ coinů. Možnost DCA i do krypta. Vyšší volatilita, ale dlouhodobě BTC ~50% p.a. (2015–2025).</p>
+<p style="margin:0 0 3px">💳 <b>Běžný účet</b> — CZK/EUR/USD bez poplatků, karta zdarma, výhodný kurz při platbách v zahraničí.</p>
+<p style="margin:0 0 3px">🔄 <b>Automatické investování</b> — nastavíš si pravidla a Revolut nakupuje za tebe. Ideální pro dlouhodobé DCA.</p>
+<p style="margin:0 0 6px">📊 <b>Analytika</b> — přehled výnosů, diverzifikace portfolia, notifikace.</p>
+<p style="margin:0 0 8px"><b>Pro začátečníky ideální mix:</b> 60% S&P 500 ETF (stabilní růst) + 20% zlato (ochrana) + 20% BTC (potenciál). Nebo konzervativněji: 80% S&P 500 + 10% zlato + 10% BTC.</p>
+</div>
+<div style="text-align:center;margin-top:10px">
+<a href="https://revolut.com/referral/?referral-code=marsims9e8" target="_blank" rel="noopener" style="display:inline-block;padding:10px 24px;background:#191C1F;color:#fff;border-radius:10px;text-decoration:none;font-weight:800;font-size:13px;letter-spacing:.3px;box-shadow:0 4px 12px rgba(0,0,0,.2)">Založit Revolut →</a>
+<p style="font-size:9px;color:var(--mut);margin-top:6px">Referral odkaz — oba dostaneme bonus při registraci</p>
+</div>
+</div>
 
 <div class="mt"><p><b>Zdroje:</b> ČSÚ · ČSSZ · VZP · MPO · ČBA · Deloitte · RE/MAX · Maxima Reality</p><p>Inflace dle ČSÚ. Odvody soc.29,2% zdr.13,5%. Daně: progresivní→flat 15%→dual 15/23%. Nemovitosti: průměr Praha. Domy: Praha-okolí. Nájmy: Bezrealitky/UlovDomov. Auto: nafta MPO/CCS. Orientační výpočet.</p></div><div class="ft">OSVČ Kalkulačka v3 · 2000–2026</div>`;
 }
