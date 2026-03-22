@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>OSVČ Dashboard — Interaktivní grafy 2000–2026</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--g:#6B8F71;--r:#C45B4A;--b:#5b7ab5;--bg:#faf7f3;--card:#fff;--mut:#7a7570;--brd:#e8e4df;--f:'DM Sans',sans-serif;--m:'DM Mono',monospace}
+body{font-family:var(--f);background:linear-gradient(180deg,var(--bg),#ece7e0);color:#3a3a3a;-webkit-font-smoothing:antialiased;min-height:100vh}
+.wrap{max-width:900px;margin:0 auto;padding:20px 14px 60px}
+.hdr{text-align:center;margin-bottom:20px}
+.hdr .tag{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--r)}
+.hdr h1{font-size:22px;font-weight:800;color:#2a2520;margin:4px 0}
+.hdr p{font-size:11px;color:var(--mut)}
+.card{background:var(--card);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.card-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.card-sub{font-size:10px;color:var(--mut);margin-bottom:12px}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center}
+.controls label{font-size:10px;font-weight:600;color:var(--mut)}
+.btn{padding:6px 12px;border-radius:6px;border:2px solid #ddd;font-size:11px;font-weight:700;cursor:pointer;background:#fff;color:#aaa;font-family:var(--f);transition:.15s}
+.btn:hover{border-color:#999;color:#666}
+.btn.on{border-color:#555;background:#555;color:#fff}
+.btn.og{border-color:var(--g);background:var(--g);color:#fff}
+.btn.or{border-color:var(--r);background:var(--r);color:#fff}
+.btn.ob{border-color:var(--b);background:var(--b);color:#fff}
+.chart-wrap{position:relative;width:100%;height:380px}
+.legend-custom{display:flex;gap:12px;flex-wrap:wrap;margin-top:10px;justify-content:center}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:10px;font-weight:600;cursor:pointer;opacity:1;transition:.2s}
+.legend-item.off{opacity:.35;text-decoration:line-through}
+.legend-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px;margin-bottom:14px}
+.stat{border-radius:10px;padding:10px 12px;text-align:center}
+.stat .val{font-size:20px;font-weight:800;font-family:var(--m)}
+.stat .lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;margin-top:2px}
+.stat .sub{font-size:9px;opacity:.7;margin-top:1px}
+select.yr{padding:6px 8px;border-radius:8px;font-size:13px;font-weight:700;font-family:var(--m);cursor:pointer;border:2px solid var(--brd);background:#fff;color:#3a3a3a}
+select.yr.sa{border-color:var(--g);color:var(--g)}
+select.yr.sb{border-color:var(--r);color:var(--r)}
+.yr-bar{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:14px;padding:12px 16px;background:var(--card);border-radius:14px;box-shadow:0 2px 10px rgba(0,0,0,.04)}
+.yr-bar .lbl{font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.5px}
+.yr-bar .sep{font-size:16px;color:var(--brd);font-weight:300}
+.presets{display:flex;gap:4px;flex-wrap:wrap;margin-left:auto}
+.preset{padding:4px 10px;border-radius:5px;border:1.5px solid var(--brd);font-size:10px;font-weight:700;cursor:pointer;background:#fff;color:var(--mut);font-family:var(--f);transition:.15s}
+.preset:hover{border-color:#999;color:#666}
+.preset.on{border-color:var(--r);background:var(--r);color:#fff}
+.tab-bar{display:flex;gap:4px;margin-bottom:14px;flex-wrap:wrap}
+.tab{padding:8px 14px;border-radius:8px 8px 0 0;font-size:12px;font-weight:700;cursor:pointer;border:2px solid var(--brd);border-bottom:none;background:var(--bg);color:var(--mut);transition:.15s}
+.tab.active{background:var(--card);color:#2a2520;border-color:var(--brd)}
+.info{background:#f5f0eb;border-radius:10px;padding:10px;font-size:9px;color:var(--mut);line-height:1.5;margin-top:10px}
+.info b{color:#3a3a3a}
+.back-link{display:inline-block;margin-bottom:12px;padding:6px 12px;background:var(--r);color:#fff;border-radius:8px;text-decoration:none;font-weight:700;font-size:11px}
+.tooltip-box{position:absolute;background:rgba(42,37,32,.92);color:#fff;padding:8px 12px;border-radius:8px;font-size:11px;pointer-events:none;z-index:10;font-family:var(--m);white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+@media(max-width:600px){.chart-wrap{height:300px}.stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<a href="osvc-kalkulacka_6.html" class="back-link">← Zpět na kalkulačku</a>
+
+<div class="hdr">
+<div class="tag">OSVČ Dashboard</div>
+<h1>Příjmy, odvody & náklady 2000–2026</h1>
+<p>Interaktivní porovnání průměrné mzdy, mediánu, min. záloh OSVČ a nákladů zaměstnavatele</p>
+</div>
+
+<div id="stats-row" class="stats"></div>
+
+<div class="yr-bar">
+  <span class="lbl">Od:</span>
+  <select class="yr sa" id="yrFrom" onchange="setRange(+this.value, null)"></select>
+  <span class="sep">→</span>
+  <span class="lbl">Do:</span>
+  <select class="yr sb" id="yrTo" onchange="setRange(null, +this.value)"></select>
+  <div class="presets" id="presets"></div>
+</div>
+
+<div class="tab-bar" id="tabs"></div>
+
+<div class="card" id="main-card">
+<div class="card-title" id="chart-title">Přehled příjmů a odvodů</div>
+<div class="card-sub" id="chart-sub">Klikni na legendu pro skrytí/zobrazení řady</div>
+<div class="controls" id="controls"></div>
+<div class="chart-wrap"><canvas id="mainChart"></canvas></div>
+<div class="legend-custom" id="legend"></div>
+</div>
+
+<div class="info">
+<p><b>Zdroje:</b> ČSÚ (průměrná mzda, medián), ČSSZ (min. zálohy soc.), VZP (min. zálohy zdr.), MPO, ČBA (hypoteční sazby)</p>
+<p><b>Průměrná mzda</b> = celostátní průměr hrubé měsíční mzdy. <b>Medián</b> = prostřední hodnota (polovina lidí bere méně). <b>Náklad zaměstnavatele</b> = hrubá + soc. 24,8% + zdr. 9%. <b>Min. zálohy OSVČ</b> = minimální měsíční sociální + zdravotní pojištění.</p>
+<p>2025–2026: odhad/projekce na základě trendů a schválené legislativy.</p>
+</div>
+</div>
+
+<script>
+// === DATA ===
+const DATA = {
+  years: [2000,2001,2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],
+  // Průměrná hrubá měsíční mzda (ČSÚ)
+  avgWage: [13219,14378,15524,16430,17466,18344,19546,20957,22592,23344,23864,24455,25067,25035,25607,26287,27575,29496,31885,33429,34125,37047,39306,42165,44404,46500,49000],
+  // Medián mezd (ČSÚ)
+  medianWage: [11500,12500,13500,14200,15100,15900,16900,18100,19500,20200,20700,21200,21700,21700,22100,22700,23750,25061,27170,28610,29333,31183,33200,35667,37700,39500,41600],
+  // Minimální mzda
+  minWage: [4000,5000,5700,6200,6700,7185,7570,8000,8000,8000,8000,8000,8000,8000,8500,9200,9900,11000,12200,13350,14600,15200,16200,17300,18900,20800,22200],
+  // Inflace (%)
+  inflation: [3.9,4.7,1.8,0.1,2.8,1.9,2.5,2.8,6.3,1.0,1.5,1.9,3.3,1.4,0.4,0.3,0.7,2.5,2.1,2.8,3.2,3.8,15.1,10.7,2.4,2.5,2.2],
+  // Min. záloha sociální (OSVČ)
+  minSoc: [879,937,1005,1051,1071,1143,1394,1491,1596,1720,1731,1807,1836,1890,1894,1943,1972,2061,2189,2388,2544,2588,2841,2944,3852,4759,5720],
+  // Min. záloha zdravotní (OSVČ)
+  minZdr: [675,675,748,810,810,922,1064,1141,1456,1590,1601,1670,1697,1748,1752,1797,1823,1906,2024,2208,2352,2393,2627,2722,2968,3143,3306],
+  // Cena bytu Praha m²
+  priceM2: [15000,16500,18000,21000,24000,27000,33000,42000,45000,38000,36000,35000,34000,33000,35000,40000,48000,55000,62000,63000,68000,85000,105000,100000,116000,135000,157000],
+  // Hypoteční sazba %
+  hypoRate: [7.5,6.8,5.9,5.3,4.8,4.2,4.3,4.6,5.7,5.5,4.9,4.1,3.5,3.2,2.9,2.5,2.0,2.2,2.9,2.7,2.3,2.5,5.3,6.0,5.1,4.6,4.5],
+  // Cena domu Praha-okolí m²
+  housePriceM2: [10000,11000,12000,13000,14500,16000,20000,27000,30000,26000,25000,25000,24000,24000,25000,28000,33000,40000,48000,50000,55000,65000,80000,78000,85000,95000,110000],
+};
+
+// Vypočítané řady
+function calcEmployerCost(y, gross) {
+  // sazby se měnily
+  let socE, zdrE;
+  if (y <= 2008) { socE = 0.26; zdrE = 0.09; }
+  else if (y <= 2018) { socE = 0.25; zdrE = 0.09; }
+  else if (y <= 2023) { socE = 0.248; zdrE = 0.09; }
+  else { socE = 0.248; zdrE = 0.09; }
+  return Math.round(gross * (1 + socE + zdrE));
+}
+
+function calcNetEmployee(y, gross) {
+  let socZ, zdrZ;
+  if (y <= 2008) { socZ = 0.08; zdrZ = 0.045; }
+  else if (y <= 2018) { socZ = 0.065; zdrZ = 0.045; }
+  else if (y <= 2023) { socZ = 0.065; zdrZ = 0.045; }
+  else { socZ = 0.071; zdrZ = 0.045; }
+  const soc = Math.round(gross * socZ);
+  const zdr = Math.round(gross * zdrZ);
+  // daň zjednodušeně
+  let tax;
+  if (y <= 2007) {
+    const r = gross * 12;
+    let t = 0;
+    if (r <= 109200) t = r * 0.15;
+    else if (r <= 218400) t = 109200 * 0.15 + (r - 109200) * 0.2;
+    else if (r <= 331200) t = 109200 * 0.15 + 109200 * 0.2 + (r - 218400) * 0.25;
+    else t = 109200 * 0.15 + 109200 * 0.2 + 112800 * 0.25 + (r - 331200) * 0.32;
+    tax = Math.round(t / 12);
+  } else if (y <= 2020) {
+    const socE = y <= 2008 ? 0.26 : (y <= 2018 ? 0.25 : 0.248);
+    const zdrE = 0.09;
+    tax = Math.max(0, Math.round(gross * (1 + socE + zdrE) * 0.15) - Math.round((y >= 2008 ? 24840 : 7200) / 12));
+  } else if (y <= 2023) {
+    tax = Math.max(0, Math.round(gross * 0.15) - Math.round(30840 / 12));
+  } else {
+    const ld = 1582812;
+    const lm = Math.round(ld / 12);
+    if (gross <= lm) tax = Math.max(0, Math.round(gross * 0.15) - Math.round(30840 / 12));
+    else tax = Math.max(0, Math.round(lm * 0.15 + (gross - lm) * 0.23) - Math.round(30840 / 12));
+  }
+  return gross - soc - zdr - tax;
+}
+
+// Derived arrays
+const employerCost = DATA.years.map((y, i) => calcEmployerCost(y, DATA.avgWage[i]));
+const minOdvodyOSVC = DATA.years.map((_, i) => DATA.minSoc[i] + DATA.minZdr[i]);
+const netAvgEmployee = DATA.years.map((y, i) => calcNetEmployee(y, DATA.avgWage[i]));
+const realWageIndex = (() => {
+  const r = [100];
+  for (let i = 1; i < DATA.years.length; i++) {
+    const nomGrowth = DATA.avgWage[i] / DATA.avgWage[i - 1];
+    const realGrowth = nomGrowth / (1 + DATA.inflation[i] / 100);
+    r.push(Math.round(r[i - 1] * realGrowth * 10) / 10);
+  }
+  return r;
+})();
+const cpiIndex = (() => {
+  const r = [100];
+  for (let i = 1; i < DATA.years.length; i++) {
+    r.push(Math.round(r[i - 1] * (1 + DATA.inflation[i] / 100) * 10) / 10);
+  }
+  return r;
+})();
+
+// === CHART CONFIG ===
+const TABS = [
+  { id: 'wages', label: '💰 Mzdy & OSVČ', title: 'Průměrná mzda, medián a min. zálohy OSVČ', sub: 'Hrubé měsíční hodnoty v Kč' },
+  { id: 'costs', label: '🏢 Náklady zaměstnavatele', title: 'Náklady zaměstnavatele vs čistá mzda', sub: 'Co stojí zaměstnanec vs co dostane' },
+  { id: 'realty', label: '🏠 Nemovitosti', title: 'Ceny nemovitostí Praha', sub: 'Kč za m² — byty a domy' },
+  { id: 'inflation', label: '📊 Inflace & reálné mzdy', title: 'Inflace, kumulativní CPI a reálné mzdy', sub: 'Index (2000 = 100) a roční inflace' },
+  { id: 'compare', label: '⚖️ OSVČ vs Zaměstnanec', title: 'Porovnání odvodů OSVČ vs zaměstnanec', sub: 'Při průměrné hrubé mzdě daného roku' },
+];
+
+const COLORS = {
+  avgWage: '#C45B4A',
+  medianWage: '#e8a33d',
+  minWage: '#999',
+  employerCost: '#5b7ab5',
+  minOdvody: '#6B8F71',
+  netEmployee: '#82b07a',
+  priceM2: '#C45B4A',
+  housePriceM2: '#e8a33d',
+  hypoRate: '#5b7ab5',
+  inflation: '#C45B4A',
+  cpi: '#e8a33d',
+  realWage: '#6B8F71',
+  socOSVC: '#C45B4A',
+  zdrOSVC: '#e8a33d',
+  socZam: '#5b7ab5',
+  zdrZam: '#6B8F71',
+  danOSVC: '#b05090',
+  danZam: '#999',
+};
+
+let activeTab = 'wages';
+let chart = null;
+let yrFrom = 2000;
+let yrTo = 2026;
+const F = n => Math.round(n).toLocaleString('cs-CZ');
+
+const PRESETS = [
+  { label: 'Vše', from: 2000, to: 2026 },
+  { label: 'EU boom', from: 2004, to: 2008 },
+  { label: 'Krize', from: 2007, to: 2012 },
+  { label: 'Levné peníze', from: 2013, to: 2019 },
+  { label: 'Covid→Inflace', from: 2019, to: 2023 },
+  { label: 'Konsolidace', from: 2023, to: 2026 },
+  { label: 'Posledních 10', from: 2016, to: 2026 },
+];
+
+function getSlice() {
+  const i0 = DATA.years.indexOf(yrFrom);
+  const i1 = DATA.years.indexOf(yrTo);
+  return { i0, i1: i1 + 1 };  // i1+1 for slice end
+}
+
+function sliceArr(arr) {
+  const { i0, i1 } = getSlice();
+  return arr.slice(i0, i1);
+}
+
+function setRange(from, to) {
+  if (from !== null) yrFrom = from;
+  if (to !== null) yrTo = to;
+  if (yrFrom > yrTo) { const t = yrFrom; yrFrom = yrTo; yrTo = t; }
+  renderAll();
+}
+
+function renderYearSelectors() {
+  const fromEl = document.getElementById('yrFrom');
+  const toEl = document.getElementById('yrTo');
+  fromEl.innerHTML = DATA.years.map(y => `<option value="${y}"${y === yrFrom ? ' selected' : ''}>${y}</option>`).join('');
+  toEl.innerHTML = DATA.years.map(y => `<option value="${y}"${y === yrTo ? ' selected' : ''}>${y}</option>`).join('');
+  // presets
+  const presEl = document.getElementById('presets');
+  presEl.innerHTML = PRESETS.map(p =>
+    `<button class="preset${p.from === yrFrom && p.to === yrTo ? ' on' : ''}" onclick="setRange(${p.from},${p.to})">${p.label}</button>`
+  ).join('');
+}
+
+function getDatasets(tab) {
+  const s = sliceArr;
+  switch (tab) {
+    case 'wages': return [
+      { label: 'Průměrná mzda', data: s(DATA.avgWage), borderColor: COLORS.avgWage, backgroundColor: COLORS.avgWage + '18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6 },
+      { label: 'Medián mezd', data: s(DATA.medianWage), borderColor: COLORS.medianWage, backgroundColor: COLORS.medianWage + '18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6 },
+      { label: 'Minimální mzda', data: s(DATA.minWage), borderColor: COLORS.minWage, backgroundColor: COLORS.minWage + '10', fill: false, tension: 0.3, borderWidth: 2, borderDash: [5, 3], pointRadius: 2, pointHoverRadius: 5 },
+      { label: 'Min. zálohy OSVČ', data: s(minOdvodyOSVC), borderColor: COLORS.minOdvody, backgroundColor: COLORS.minOdvody + '18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6 },
+    ];
+    case 'costs': return [
+      { label: 'Náklad zaměstnavatele', data: s(employerCost), borderColor: COLORS.employerCost, backgroundColor: COLORS.employerCost + '18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6 },
+      { label: 'Průměrná hrubá mzda', data: s(DATA.avgWage), borderColor: COLORS.avgWage, backgroundColor: COLORS.avgWage + '10', fill: false, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6 },
+      { label: 'Čistá mzda zaměstnance', data: s(netAvgEmployee), borderColor: COLORS.netEmployee, backgroundColor: COLORS.netEmployee + '18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6 },
+    ];
+    case 'realty': return [
+      { label: 'Byty Praha (Kč/m²)', data: s(DATA.priceM2), borderColor: COLORS.priceM2, backgroundColor: COLORS.priceM2 + '18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y' },
+      { label: 'Domy Praha-okolí (Kč/m²)', data: s(DATA.housePriceM2), borderColor: COLORS.housePriceM2, backgroundColor: COLORS.housePriceM2 + '18', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y' },
+      { label: 'Hypoteční sazba (%)', data: s(DATA.hypoRate), borderColor: COLORS.hypoRate, backgroundColor: COLORS.hypoRate + '10', fill: false, tension: 0.3, borderWidth: 2, borderDash: [6, 3], pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y1' },
+    ];
+    case 'inflation': return [
+      { label: 'Roční inflace (%)', data: s(DATA.inflation), borderColor: COLORS.inflation, backgroundColor: COLORS.inflation + '30', fill: true, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y', type: 'bar' },
+      { label: 'Kumulativní CPI (2000=100)', data: s(cpiIndex), borderColor: COLORS.cpi, backgroundColor: COLORS.cpi + '10', fill: false, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y1' },
+      { label: 'Reálná mzda (index 2000=100)', data: s(realWageIndex), borderColor: COLORS.realWage, backgroundColor: COLORS.realWage + '10', fill: false, tension: 0.3, borderWidth: 2.5, pointRadius: 3, pointHoverRadius: 6, yAxisID: 'y1' },
+    ];
+    case 'compare': {
+      const socOSVC = DATA.years.map((_, i) => DATA.minSoc[i]);
+      const zdrOSVC = DATA.years.map((_, i) => DATA.minZdr[i]);
+      const socZam = DATA.years.map((y, i) => {
+        const r = y <= 2008 ? 0.08 : (y <= 2023 ? 0.065 : 0.071);
+        return Math.round(DATA.avgWage[i] * r);
+      });
+      const zdrZam = DATA.years.map((_, i) => Math.round(DATA.avgWage[i] * 0.045));
+      return [
+        { label: 'OSVČ soc. záloha', data: s(socOSVC), borderColor: COLORS.socOSVC, backgroundColor: COLORS.socOSVC + '40', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 2 },
+        { label: 'OSVČ zdr. záloha', data: s(zdrOSVC), borderColor: COLORS.zdrOSVC, backgroundColor: COLORS.zdrOSVC + '40', fill: true, tension: 0.3, borderWidth: 2, pointRadius: 2 },
+        { label: 'Zaměstnanec soc.', data: s(socZam), borderColor: COLORS.socZam, backgroundColor: COLORS.socZam + '20', fill: false, tension: 0.3, borderWidth: 2, borderDash: [5, 3], pointRadius: 2 },
+        { label: 'Zaměstnanec zdr.', data: s(zdrZam), borderColor: COLORS.zdrZam, backgroundColor: COLORS.zdrZam + '20', fill: false, tension: 0.3, borderWidth: 2, borderDash: [5, 3], pointRadius: 2 },
+      ];
+    }
+  }
+}
+
+function getScales(tab) {
+  const base = {
+    x: { grid: { color: '#e8e4df50' }, ticks: { font: { family: "'DM Mono',monospace", size: 10 } } },
+    y: { grid: { color: '#e8e4df50' }, ticks: { font: { family: "'DM Mono',monospace", size: 10 }, callback: v => v >= 1000 ? (v / 1000) + 'k' : v }, beginAtZero: false }
+  };
+  if (tab === 'realty') {
+    base.y.position = 'left';
+    base.y.title = { display: true, text: 'Kč/m²', font: { size: 10 } };
+    base.y1 = { position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { family: "'DM Mono',monospace", size: 10 }, callback: v => v + '%' }, title: { display: true, text: 'Sazba %', font: { size: 10 } } };
+  }
+  if (tab === 'inflation') {
+    base.y.position = 'left';
+    base.y.title = { display: true, text: 'Inflace %', font: { size: 10 } };
+    base.y.ticks.callback = v => v + '%';
+    base.y1 = { position: 'right', grid: { drawOnChartArea: false }, ticks: { font: { family: "'DM Mono',monospace", size: 10 } }, title: { display: true, text: 'Index', font: { size: 10 } } };
+  }
+  return base;
+}
+
+function updateStats() {
+  const { i0, i1 } = getSlice();
+  const iEnd = i1 - 1;  // last index in range
+  const yEnd = DATA.years[iEnd];
+  const yStart = DATA.years[i0];
+  const pctW = DATA.avgWage[i0] > 0 ? Math.round((DATA.avgWage[iEnd] / DATA.avgWage[i0] - 1) * 100) : 0;
+  const pctO = minOdvodyOSVC[i0] > 0 ? Math.round((minOdvodyOSVC[iEnd] / minOdvodyOSVC[i0] - 1) * 100) : 0;
+  const html = [
+    { val: F(DATA.avgWage[iEnd]), lbl: `Průměrná mzda ${yEnd}`, sub: `${F(DATA.avgWage[i0])} v ${yStart} (${pctW > 0 ? '+' : ''}${pctW}%)`, bg: '#fdf0ee', color: COLORS.avgWage },
+    { val: F(DATA.medianWage[iEnd]), lbl: `Medián ${yEnd}`, sub: `${F(DATA.medianWage[i0])} v ${yStart}`, bg: '#fef6eb', color: COLORS.medianWage },
+    { val: F(minOdvodyOSVC[iEnd]), lbl: `Min. zálohy OSVČ ${yEnd}`, sub: `${F(minOdvodyOSVC[i0])} v ${yStart} (${pctO > 0 ? '+' : ''}${pctO}%)`, bg: '#edf5ef', color: COLORS.minOdvody },
+    { val: F(employerCost[iEnd]), lbl: `Náklad zaměstnavatele ${yEnd}`, sub: `při hrubé ${F(DATA.avgWage[iEnd])}`, bg: '#eef2f8', color: COLORS.employerCost },
+  ].map(s => `<div class="stat" style="background:${s.bg}"><div class="val" style="color:${s.color}">${s.val}</div><div class="lbl">${s.lbl}</div><div class="sub">${s.sub}</div></div>`).join('');
+  document.getElementById('stats-row').innerHTML = html;
+}
+
+function renderTabs() {
+  document.getElementById('tabs').innerHTML = TABS.map(t =>
+    `<div class="tab${t.id === activeTab ? ' active' : ''}" onclick="switchTab('${t.id}')">${t.label}</div>`
+  ).join('');
+}
+
+function renderLegend(datasets) {
+  const el = document.getElementById('legend');
+  el.innerHTML = datasets.map((ds, i) =>
+    `<div class="legend-item${ds.hidden ? ' off' : ''}" onclick="toggleDataset(${i})" title="Klikni pro skrytí/zobrazení">
+      <div class="legend-dot" style="background:${ds.borderColor}"></div>
+      <span>${ds.label}</span>
+    </div>`
+  ).join('');
+}
+
+function toggleDataset(i) {
+  const meta = chart.getDatasetMeta(i);
+  meta.hidden = !meta.hidden;
+  chart.update();
+  renderLegend(chart.data.datasets.map((ds, j) => ({ ...ds, hidden: chart.getDatasetMeta(j).hidden })));
+}
+
+function buildChart(tab) {
+  const ctx = document.getElementById('mainChart').getContext('2d');
+  if (chart) chart.destroy();
+
+  const datasets = getDatasets(tab);
+  const scales = getScales(tab);
+  const tabInfo = TABS.find(t => t.id === tab);
+
+  document.getElementById('chart-title').textContent = tabInfo.title;
+  document.getElementById('chart-sub').textContent = tabInfo.sub;
+
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: { labels: sliceArr(DATA.years), datasets },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(42,37,32,.92)',
+          titleFont: { family: "'DM Mono',monospace", size: 12 },
+          bodyFont: { family: "'DM Mono',monospace", size: 11 },
+          padding: 10,
+          cornerRadius: 8,
+          callbacks: {
+            label: function (ctx) {
+              let v = ctx.parsed.y;
+              if (tab === 'inflation' || tab === 'realty' && ctx.dataset.yAxisID === 'y1') {
+                if (ctx.dataset.label.includes('%') || ctx.dataset.label.includes('sazba') || ctx.dataset.label.includes('inflace')) {
+                  return ctx.dataset.label + ': ' + v.toLocaleString('cs-CZ') + (ctx.dataset.label.includes('index') || ctx.dataset.label.includes('Index') ? '' : '%');
+                }
+              }
+              if (ctx.dataset.label.includes('index') || ctx.dataset.label.includes('Index')) {
+                return ctx.dataset.label + ': ' + v.toLocaleString('cs-CZ', { maximumFractionDigits: 1 });
+              }
+              if (ctx.dataset.label.includes('%')) {
+                return ctx.dataset.label + ': ' + v + '%';
+              }
+              return ctx.dataset.label + ': ' + Math.round(v).toLocaleString('cs-CZ') + ' Kč';
+            }
+          }
+        }
+      },
+      scales,
+      animation: { duration: 600, easing: 'easeOutQuart' }
+    }
+  });
+
+  renderLegend(datasets);
+}
+
+function switchTab(tab) {
+  activeTab = tab;
+  renderTabs();
+  buildChart(tab);
+}
+
+function renderAll() {
+  renderYearSelectors();
+  updateStats();
+  renderTabs();
+  buildChart(activeTab);
+}
+
+// Init
+renderAll();
+</script>
+</body>
+</html>
